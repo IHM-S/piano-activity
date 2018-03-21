@@ -3,15 +3,17 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+import 'bootstrap/dist/css/bootstrap.css';
+
 
 const GET_NOTE_URL = 'http://localhost:5000/nextnote';
 const CHECK_NOTE_URL = 'http://localhost:5000/checknote'
 
 const fetchNextNote = (index) => {
   return fetch(GET_NOTE_URL + '?index=' + index).then(response => response.json());
-} 
+}
 
-const checkAnswer = (octave, keyNames, index, sheetID) => 
+const checkAnswer = (octave, keyNames, index, sheetID) =>
   fetch(CHECK_NOTE_URL, {
     body: JSON.stringify({
       'octave'  : octave,
@@ -26,6 +28,7 @@ const checkAnswer = (octave, keyNames, index, sheetID) =>
     method: 'POST'
   }).then(response => response.json());
 
+// here is where everthing starts, the index will create our application and put everthing under id root
 ReactDOM.render(
   <App
     fetchNextNote={fetchNextNote}

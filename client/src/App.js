@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Piano from './Piano.js';
-
+import Result from './Result';
 import './App.css';
 
 class App extends Component {
@@ -13,28 +13,41 @@ class App extends Component {
       enteredOctave: null,
       index : 0,
       sheetID : 1,
-      faultList : [],
+      resultList : [],
       isFinish : false
+
     }
 
   }
 
   onPress = (octave, keyNames) => {
-    this.setState({enteredNote: keyNames.join(',')}) 
-    this.setState({enteredOctave: octave})
+    console.log('key pressed: ' + keyNames)
+    this.setState({
+      enteredNote: keyNames.join(','),
+      enteredOctave: octave
+    })
+    this.setState({})
     this.props.checkAnswer(octave, keyNames, this.state.index, this.state.sheetID).then((data) => {
       console.log(data);
       if(! data.correct){
-        this.state.faultList.push(
-          {'correctNote' : this.state.currentNote, 'correctOctave' : this.state.currentOctave, 
-           'enteredOctave' : this.state.enteredOctave, 'enteredNote' : this.state.enteredNote})
+        this.state.resultList.push(
+          {'correctNote' : this.state.currentNote, 'correctOctave' : this.state.currentOctave,
+           'enteredOctave' : this.state.enteredOctave, 'enteredNote' : this.state.enteredNote,
+           'correct' : false, 'index' : this.state.index})
+      } else {
+        this.state.resultList.push(
+          {'correctNote' : this.state.currentNote, 'correctOctave' : this.state.currentOctave,
+           'enteredOctave' : this.state.enteredOctave, 'enteredNote' : this.state.enteredNote,
+           'correct' : true, 'index' : this.state.index})
       }
-      
+
       this.setState({index: this.state.index + 1})
       this.props.fetchNextNote(this.state.index).then((data) => {
-      this.setState({currentNote: data.note});
-      this.setState({currentOctave: data.octave})
-      this.setState({isFinished: data.isFinished})
+      this.setState({
+        currentNote: data.note,
+        currentOctave: data.octave,
+        isFinished: data.isFinished
+      });
 
       }).catch((err) => {
         this.setState({error: 'Unable to connect to the server'});
@@ -54,20 +67,40 @@ class App extends Component {
   componentWillMount(){
     console.log(this.state.currentNote)
     this.props.fetchNextNote(this.state.index).then((data) => {
-      this.setState({currentNote: data.note});
-      this.setState({currentOctave: data.octave})
-      this.setState({isFinished: data.isFinished})
+      this.setState({
+        currentNote: data.note,
+        currentOctave: data.octave,
+        isFinished: data.isFinished
+      });
     }).catch((err) => {
       this.setState({error: 'Unable to connect to the server'});
     });
   }
 
+  close() {
+      this.setState({ isFinish : false})
+  }
+
   render() {
     if(this.state.isFinished){
-      console.log(this.state.faultList)
+      console.log(this.state.resultList)
       return (
         <div className="Result">
-          {this.state.faultList.forEach(e => { <div>e</div>  } )}
+            <table className="table">
+                <thead className="thead-dark">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Correct Octave</th>
+                    <th scope="col">Correct Note</th>
+                    <th scope="col">Entered Octave</th>
+                    <th scope="col">Entered Note</th>
+                    <th scope="col">Correctness</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {this.state.resultList.map((e, idx) => <Result key={idx} result={e}/>)}
+                </tbody>
+            </table>
         </div>)
     } else {
       return (
@@ -90,7 +123,7 @@ class App extends Component {
           numOctaves={3}
           onPress={this.onPress}
         />
-        
+
       </div>
       );
     }

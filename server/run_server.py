@@ -30,9 +30,12 @@ def next_note():
 @app.route('/checknote', methods=['POST'])
 def check_note():
     notes = request.get_json()
-    print(notes)
+    print("CheckRequest: ")
+    print("    checkNote: " + str(notes))
 
     db_result = db_connector.get_note_by_index_and_sheetID(notes['sheetID'], notes['index'])
+    print("    correct note: " + str(db_result[1]))
+    print("    " + ",".join(notes['notes']))
     if notes['octave'] == db_result[0] and ",".join(notes['notes']) == db_result[1]:
         return jsonify({'correct' : True})
     else:
