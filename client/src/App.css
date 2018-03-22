@@ -8,9 +8,20 @@
 }
 
 .App-note-name-display {
-  font-size: 80px;
-  height: 120px;
+  font-size: 50px;
+  height: 60px;
   font-weight: bold;
+}
+
+.App-note-octave-display {
+  font-size: 40px;
+  height: 50px;
+  font-weight: bold;
+}
+
+.APP-note-music-sheet-name {
+  font-size: 30px;
+  height: 40px;
 }
 
 .App-note-loading {
@@ -21,7 +32,7 @@
 
 .App-header {
   background-color: #222;
-  height: 150px;
+  height: 175px;
   padding: 20px;
   color: white;
 }

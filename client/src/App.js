@@ -12,10 +12,9 @@ class App extends Component {
       enteredNote: null,
       enteredOctave: null,
       index : 0,
-      sheetID : 1,
+      sheetName : 'hello',
       resultList : [],
       isFinish : false
-
     }
 
   }
@@ -26,8 +25,7 @@ class App extends Component {
       enteredNote: keyNames.join(','),
       enteredOctave: octave
     })
-    this.setState({})
-    this.props.checkAnswer(octave, keyNames, this.state.index, this.state.sheetID).then((data) => {
+    this.props.checkAnswer(octave, keyNames, this.state.index, this.state.sheetName).then((data) => {
       console.log(data);
       if(! data.correct){
         this.state.resultList.push(
@@ -42,7 +40,7 @@ class App extends Component {
       }
 
       this.setState({index: this.state.index + 1})
-      this.props.fetchNextNote(this.state.index).then((data) => {
+      this.props.fetchNextNote(this.state.sheetName, this.state.index).then((data) => {
       this.setState({
         currentNote: data.note,
         currentOctave: data.octave,
@@ -66,7 +64,7 @@ class App extends Component {
 
   componentWillMount(){
     console.log(this.state.currentNote)
-    this.props.fetchNextNote(this.state.index).then((data) => {
+    this.props.fetchNextNote(this.state.sheetName, this.state.index).then((data) => {
       this.setState({
         currentNote: data.note,
         currentOctave: data.octave,
@@ -75,6 +73,7 @@ class App extends Component {
     }).catch((err) => {
       this.setState({error: 'Unable to connect to the server'});
     });
+    console.log("localStorage:  " + localStorage.getItem("myCat"))
   }
 
   close() {
@@ -82,10 +81,12 @@ class App extends Component {
   }
 
   render() {
+    
     if(this.state.isFinished){
       console.log(this.state.resultList)
       return (
         <div className="Result">
+            <h4 align="center"> Result Summary </h4>
             <table className="table">
                 <thead className="thead-dark">
                   <tr>
@@ -111,6 +112,7 @@ class App extends Component {
           {
             this.state.currentNote ?
               <div className="App-display">
+                <div className="APP-note-music-sheet-name">Music Sheet Name: {this.state.sheetName} </div>
                 <div className="App-note-octave-display">Octave: {this.getOctave()}</div>
                 <div className="App-note-name-display">Note: {this.getNote()}</div>
               </div>

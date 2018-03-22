@@ -9,17 +9,19 @@ import 'bootstrap/dist/css/bootstrap.css';
 const GET_NOTE_URL = 'http://localhost:5000/nextnote';
 const CHECK_NOTE_URL = 'http://localhost:5000/checknote'
 
-const fetchNextNote = (index) => {
-  return fetch(GET_NOTE_URL + '?index=' + index).then(response => response.json());
+// ask the back end what is the next note
+const fetchNextNote = (sheetName, index) => {
+  return fetch(GET_NOTE_URL + `?sheetName=${sheetName}&index=${index}`).then(response => response.json());
 }
 
-const checkAnswer = (octave, keyNames, index, sheetID) =>
+// check the user entered answer to see if they are correct
+const checkAnswer = (octave, keyNames, index, sheetName) =>
   fetch(CHECK_NOTE_URL, {
     body: JSON.stringify({
       'octave'  : octave,
       'notes'   : keyNames,
       'index'   : index,
-      'sheetID' : sheetID
+      'sheetName' : sheetName
     }),
     cache: 'no-cache',
     headers: {
