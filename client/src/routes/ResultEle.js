@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-//import { table } from 'reactstrap';
 
-
-export default class Result extends Component {
+export default class ResultEle extends Component {
     constructor(props) {
         super(props);
         this.state = this.props.result
-        console.log(this.state)
     }
 
     render() {

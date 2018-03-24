@@ -25,30 +25,46 @@ def welcome():
 
 @app.route('/nextnote', methods=['GET'])
 def next_note():
+    print("nextNote Request: ")
+    print("    input: " + str(request.args))
     index = int(request.args.get('index'))
     sheet_name = request.args.get('sheetName')
-    user_name, password = cipher.decrypt(base64.b64decode(session_info['session'].encode())).decode().strip().split(',')
+    user_name, password = cipher.decrypt(base64.b64decode(request.args.get('session').encode())).decode().strip().split(',')
     if user_name is not None and password is not None and db_connector.user_existence(user_name, password):
         temp_result = db_connector.get_note_by_index_and_sheet_name(sheet_name, index)
         if temp_result:
+            print("    return: " + str({'userExistence' : True, 'octave' : temp_result[0], 'note' : temp_result[1], 'isFinished' : False}))
+            print()
             return jsonify({'userExistence' : True, 'octave' : temp_result[0], 'note' : temp_result[1], 'isFinished' : False})
         else:
+            print("    return: " + str({'userExistence' : True, 'isFinished' : True}))
+            print()
             return jsonify({'userExistence' : True, 'isFinished' : True})
     else:
+        print("    return: " + str({'userExistence' : False}))
+        print()
         return jsonify({'userExistence' : False})
 
 
 @app.route('/checknote', methods=['POST'])
 def check_note():
     notes = request.get_json()
-    user_name, password = cipher.decrypt(base64.b64decode(session_info['session'].encode())).decode().strip().split(',')
+    print("checkNote Request: ")
+    print("    input: " + str(notes))
+    user_name, password = cipher.decrypt(base64.b64decode(notes['session'].encode())).decode().strip().split(',')
     if user_name is not None and password is not None and db_connector.user_existence(user_name, password):
         db_result = db_connector.get_note_by_index_and_sheet_name(notes['sheetName'], notes['index'])
         if notes['octave'] == db_result[0] and ",".join(notes['notes']) == db_result[1]:
+            print("    return: " + str({'userExistence' : True, 'correct' : True}))
+            print()
             return jsonify({'userExistence' : True, 'correct' : True})
         else:
+            print("    return: " + str({'userExistence' : True, 'correct' : False}))
+            print()
             return jsonify({'userExistence' : True, 'correct' : False})
     else:
+        print("    return: " + str({'userExistence' : False}))
+        print()
         return jsonify({'userExistence' : False})
 
 @app.route('/usersignin', methods=['POST'])
@@ -59,10 +75,12 @@ def user_sign_in():
     if db_connector.insert_new_user(user_info["userName"], user_info["password"]):
         # insert to db successfully
         print("successfully insert user")
+        print()
         return jsonify({'succeed' : True})
     else:
         # user already exist
         print("fail to insert user")
+        print()
         return jsonify({'succeed' : False, 'message' : user_info["userName"] + " user name already exist."})
 
 @app.route('/userlogin', methods=['POST'])
@@ -90,6 +108,7 @@ def check_session():
         print("SessionCheckRequest: ")
         print("    decryption failed")
         print("    userExistence: " + str(False))
+        print()
         return jsonify({'userExistence' : False})
 
     print("SessionCheckRequest: ")
@@ -98,9 +117,11 @@ def check_session():
     print("    password: " + password)
     if user_name is not None and password is not None and db_connector.user_existence(user_name, password):
         print("    userExistence: " + str(True))
+        print()
         return jsonify({'userExistence' : True})
     else:
         print("    userExistence: " + str(False))
+        print()
         return jsonify({'userExistence' : False})
 
 

@@ -1,63 +1,87 @@
 import React, { Component } from 'react';
 import Piano from './Piano.js';
-import Result from './Result';
-import SignUp from './SignUp'
-import './App.css';
+import { withRouter } from 'react-router'
+import './Main.css';
 
+const GET_NOTE_URL = 'http://localhost:5000/nextnote';
+const CHECK_NOTE_URL = 'http://localhost:5000/checknote'
 
 export default withRouter(class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentOctave: null,
-      currentNote: null,
-      enteredNote: null,
-      enteredOctave: null,
-      index : 0,
-      sheetName : 'hello',
-      resultList : [],
-      isFinish : false,
+      currentOctave :  null,
+      currentNote   :  null,
+      enteredNote   :  null,
+      enteredOctave :  null,
+      index         :  0,
+      sheetName     :  'hello',
+      resultList    :  [],
+      isFinish      :  false,
+      userName      :  localStorage.getItem("pianoUserName")
     }
   }
 
+  // check the user entered answer to see if they are correct
+  checkAnswer = (octave, keyNames, index, sheetName) =>
+    fetch(CHECK_NOTE_URL, {
+      body: JSON.stringify({
+        'octave'    : octave,
+        'notes'     : keyNames,
+        'index'     : index,
+        'sheetName' : sheetName,
+        'session'   : localStorage.getItem("pianoSession")
+      }),
+      cache: 'no-cache',
+      headers: {
+        'content-type': 'application/json'
+      },
+      method: 'POST'
+    }).then(response => response.json());
+    
+
   // fetch next node from server and set the state
-  fetchAndSet = (sheetName, index) => {
-    this.props.fetchNextNote(this.state.sheetName, this.state.index).then((data) => {
+  fetchAndSet = () => {
+    fetch(GET_NOTE_URL + `?sheetName=${this.state.sheetName}&index=${this.state.index}&session=${localStorage.getItem("pianoSession")}`)
+    .then(response => response.json())
+    .then((data) => {
       this.setState({
-        currentNote: data.note,
-        currentOctave: data.octave,
-        isFinished: data.isFinished
+        currentNote   : data.note,
+        currentOctave : data.octave,
+        isFinished    : data.isFinished
       });
     }).catch((err) => {
       this.setState({error: 'Unable to connect to the server'});
     });
   }
 
-  setSignUp = (inputBool) => {this.setState({signUp : inputBool});}
-  signUpMsg = (msgStr) => {this.setState({signUpMsg : msgStr});}
-  printAll = () => {console.log(this.state)}
-
+  // what happen when key of piano is pressed
   onPress = (octave, keyNames) => {
     console.log('key pressed: ' + keyNames)
-    this.setState({
-      enteredNote: keyNames.join(','),
-      enteredOctave: octave
-    })
-    this.props.checkAnswer(octave, keyNames, this.state.index, this.state.sheetName).then((data) => {
+    this.checkAnswer(octave, keyNames, this.state.index, this.state.sheetName).then((data) => {
       console.log(data);
       if(! data.correct){
         this.state.resultList.push(
-          {'correctNote' : this.state.currentNote, 'correctOctave' : this.state.currentOctave,
-           'enteredOctave' : this.state.enteredOctave, 'enteredNote' : this.state.enteredNote,
-           'correct' : false, 'index' : this.state.index})
+          {'correctNote'   : this.state.currentNote,
+           'correctOctave' : this.state.currentOctave,
+           'enteredOctave' : octave, 
+           'enteredNote'   : keyNames.join(','),
+           'correct'       : false, 
+           'index'         : this.state.index})
       } else {
         this.state.resultList.push(
-          {'correctNote' : this.state.currentNote, 'correctOctave' : this.state.currentOctave,
-           'enteredOctave' : this.state.enteredOctave, 'enteredNote' : this.state.enteredNote,
-           'correct' : true, 'index' : this.state.index})
+          {'correctNote'   : this.state.currentNote, 
+           'correctOctave' : this.state.currentOctave,
+           'enteredOctave' : octave, 
+           'enteredNote'   : keyNames.join(','),
+           'correct'       : true, 
+           'index'         : this.state.index})
       }
-
-      this.setState({index: this.state.index + 1})
+      this.setState({
+        enteredNote: keyNames.join(','), 
+        enteredOctave: octave,
+        index: this.state.index + 1
+      })
       this.fetchAndSet(this.state.sheetName, this.state.index)
       console.log(this.state.currentNote)
     });
@@ -71,38 +95,22 @@ export default withRouter(class Main extends Component {
     return this.state.currentOctave;
   }
 
-  componentWillMount(){
+  componentDidMount(){
       this.fetchAndSet(this.state.sheetName, this.state.index)
-      console.log("localStorage:  " + localStorage.getItem("pianoSession"))
+  }
+
+  componentDidUpdate(){
+    if(this.state.isFinished){
+      console.log(this.state.resultList)
+      this.props.history.push({
+        pathname : '/result',
+        state: {resultList: this.state.resultList}
+      })
+    }
   }
 
   render() {
-    if(!this.state.signUp){
-      return <SignUp setFomSignUp={this.setFomSignUp} setSignUp={this.setSignUp} printAll={this.printAll}/>
-    }
-    if(this.state.isFinished){
-      console.log(this.state.resultList)
-      return (
-        <div className="Result">
-          <h4 align="center"> Result Summary </h4>
-          <table className="table">
-            <thead className="thead-dark">
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Correct Octave</th>
-                <th scope="col">Correct Note</th>
-                <th scope="col">Entered Octave</th>
-                <th scope="col">Entered Note</th>
-                <th scope="col">Correctness</th>
-              </tr>
-            </thead>
-            <tbody>
-                {this.state.resultList.map((e, idx) => <Result key={idx} result={e}/>)}
-            </tbody>
-          </table>
-        </div>)
-    } else {
-      return (
+    return (
       <div className="App">
         <header className="App-header">
           {this.state.error ? `An error occurred: ${this.state.error}` : null}
@@ -123,9 +131,7 @@ export default withRouter(class Main extends Component {
           numOctaves={3}
           onPress={this.onPress}
         />
-
       </div>
-      );
-    }
+    );
   }
 })

@@ -11,7 +11,7 @@ export default withRouter(class Login extends Component {
     this.state = {
         userName: '',
         password: '',
-        message: (this.props.location.state.message) ? this.props.location.state.message : null
+        message: (this.props.location.state && this.props.location.state.message) ? this.props.location.state.message : null
     }
     console.log("State of Login")
     console.log(this.state)
