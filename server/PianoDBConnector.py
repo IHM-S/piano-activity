@@ -99,4 +99,6 @@ class PianoDBConnector:
 
 if __name__ == "__main__":
     db = PianoDBConnector()
-    print(db.get_note_by_index_and_sheet_name("hello", 1) )
+    # print(db.get_note_by_index_and_sheet_name("hello", 1) )
+    # print(db.insert_new_user('ihms', 'lifeishard')
+    print(db.user_existence('ihms', '123456'))
