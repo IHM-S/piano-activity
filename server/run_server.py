@@ -29,7 +29,15 @@ def next_note():
     print("    input: " + str(request.args))
     index = int(request.args.get('index'))
     sheet_name = request.args.get('sheetName')
-    user_name, password = cipher.decrypt(base64.b64decode(request.args.get('session').encode())).decode().strip().split(',')
+
+    try:
+        user_name, password = cipher.decrypt(base64.b64decode(request.args.get('session').encode())).decode().strip().split(',')
+    except:
+        print("    decryption failed")
+        print("    return: " + str({'userExistence' : False}))
+        print()
+        return jsonify({'userExistence' : False})
+
     if user_name is not None and password is not None and db_connector.user_existence(user_name, password):
         temp_result = db_connector.get_note_by_index_and_sheet_name(sheet_name, index)
         if temp_result:
@@ -51,7 +59,15 @@ def check_note():
     notes = request.get_json()
     print("checkNote Request: ")
     print("    input: " + str(notes))
-    user_name, password = cipher.decrypt(base64.b64decode(notes['session'].encode())).decode().strip().split(',')
+
+    try:
+        user_name, password = cipher.decrypt(base64.b64decode(notes['session'].encode())).decode().strip().split(',')
+    except:
+        print("    decryption failed")
+        print("    return: " + str({'userExistence' : False}))
+        print()
+        return jsonify({'userExistence' : False})
+
     if user_name is not None and password is not None and db_connector.user_existence(user_name, password):
         db_result = db_connector.get_note_by_index_and_sheet_name(notes['sheetName'], notes['index'])
         if notes['octave'] == db_result[0] and ",".join(notes['notes']) == db_result[1]:
@@ -124,6 +140,12 @@ def check_session():
         print()
         return jsonify({'userExistence' : False})
 
+@app.route('/getallsheets', methods=['GET'])
+def get_all_sheets():
+    """
+    get all sheets name from db
+    """
+    return jsonify({'musicSheetNames': db_connector.get_all_sheets()})
 
 # @app.route('/piano/', methods=['GET'])
 # def serve_app():

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import ResultEle from './ResultEle';
+import Navbar from './Navbar'
 
 export default withRouter(class Result extends Component {
   constructor(props){
@@ -15,6 +16,7 @@ export default withRouter(class Result extends Component {
     if(this.state.resultList){
       return (
         <div className="Result">
+          <Navbar addNewMusic={false} logout={false} musicSheets={false}/>
           <h4 align="center"> Result Summary </h4>
           <table className="table">
             <thead className="thead-dark">
@@ -36,6 +38,7 @@ export default withRouter(class Result extends Component {
     } else {
       return (
         <div>
+          <Navbar/>
           <h4 align="center"> No result to show </h4>
         </div>
       )

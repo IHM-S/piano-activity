@@ -38,8 +38,8 @@ export default withRouter(class Login extends Component {
           localStorage.setItem('pianoSession', response.session);
           localStorage.setItem('pianoUserName', response.userName);
           this.props.history.push({
-            pathname : '/test',
-            state: {message: "You have created your account now, please login."}
+            pathname : '/main',
+            state: {message: "successfully login"}
           })
         } else { // username doesn't exist or username or password is wrong.
           this.setState({message: "Username doesn't exist or username or password is wrong."});
@@ -72,7 +72,7 @@ export default withRouter(class Login extends Component {
           localStorage.setItem("state", "correct");
           this.props.history.push({
             pathname : '/test',
-            state: {message: "loginSuccess."}
+            state: {message: "successfully login."}
           })
         } else { // session is incorrect
           console.log("session is incorrect")

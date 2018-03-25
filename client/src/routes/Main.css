@@ -9,8 +9,14 @@
 
 .App-note-name-display {
   font-size: 50px;
-  height: 60px;
+  height: 70px;
   font-weight: bold;
+}
+
+.App-name {
+  font-size: 30px;
+  height: 10px;
+  text-align: left;
 }
 
 .App-note-octave-display {
@@ -32,7 +38,7 @@
 
 .App-header {
   background-color: #222;
-  height: 175px;
+  height: 250px;
   padding: 20px;
   color: white;
 }

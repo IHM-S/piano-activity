@@ -1,0 +1,9 @@
+.myDrop {
+    position: fixed;
+    right: 10px;
+}   
+
+.myMenu {
+    overflow-y: scroll;
+    height: 250px;
+}

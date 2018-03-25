@@ -97,8 +97,18 @@ class PianoDBConnector:
         else:
             return True
 
+    def get_all_sheets(self):
+        cur = self.conn.cursor()
+        cur.execute("SELECT DISTINCT sheetName FROM notes ORDER BY sheetName ASC")
+        result_list = list()
+        for each_sheet in cur.fetchall():
+            result_list.append(each_sheet[0])
+        return result_list
+
 if __name__ == "__main__":
     db = PianoDBConnector()
     # print(db.get_note_by_index_and_sheet_name("hello", 1) )
     # print(db.insert_new_user('ihms', 'lifeishard')
-    print(db.user_existence('ihms', '123456'))
+    # print(db.user_existence('ihms', '123456'))
+    print(db.get_all_sheets())
+
