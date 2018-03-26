@@ -49,10 +49,16 @@ class PianoDBConnector:
         """
         cur = self.conn.cursor()
 
-        for index, note in enumerate(notes):
-            cur.execute("INSERT INTO notes (sheetName, i, octave, note) VALUES (?,?,?,?)", (sheet_name, index, note[0], note[1]))
+        cur.execute("SELECT * FROM notes WHERE sheetName = ?", (sheet_name,))
+        if cur.fetchone is None:
+            return False
+        else:
+            for index, note in enumerate(notes):
+                cur.execute("INSERT INTO notes (sheetName, i, octave, note) VALUES (?,?,?,?)", (sheet_name, index, note[0], note[1]))
+            self.conn.commit()
+            return True
 
-        self.conn.commit()
+        
 
     def get_note_by_index_and_sheet_name(self, sheet_name, index):
         """
@@ -98,12 +104,16 @@ class PianoDBConnector:
             return True
 
     def get_all_sheets(self):
+        """
+        get all sheet name
+        """
         cur = self.conn.cursor()
         cur.execute("SELECT DISTINCT sheetName FROM notes ORDER BY sheetName ASC")
         result_list = list()
         for each_sheet in cur.fetchall():
             result_list.append(each_sheet[0])
         return result_list
+
 
 if __name__ == "__main__":
     db = PianoDBConnector()

@@ -1,0 +1,14 @@
+.wrapper {
+    width: 50%;
+    position: relative;
+    top: 200px;
+    margin: auto;
+}
+
+.form-new-sheet-header {
+    text-align: center;
+}
+
+.row {
+    margin-top: 10px;
+}

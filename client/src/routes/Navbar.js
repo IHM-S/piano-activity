@@ -29,11 +29,20 @@ export default withRouter(class Navbar extends Component {
     });
   }
 
+  clickAdd = () => {
+    console.log("click add new sheet")
+    this.props.history.push({
+      pathname : '/newsheet'
+    });
+  }
+
+
+
   displayAddNewMusic = () => {
     if(this.state.addNewMusic){
       return (
         <li className="nav-item">
-          <a className="nav-link" href="#">Add New Musics</a>
+          <a className="nav-link" href="" onClick={this.clickAdd}>Add New Musics</a>
         </li>
       );
     } else {

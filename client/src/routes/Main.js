@@ -13,15 +13,15 @@ export default withRouter(class Main extends Component {
     console.log("main pass in props")
     console.log(props)
     this.state = {
-      currentOctave :  null,
-      currentNote   :  null,
-      enteredNote   :  null,
-      enteredOctave :  null,
-      index         :  0,
-      sheetName     :  'hello',
-      resultList    :  [],
-      isFinish      :  false,
-      userName      :  localStorage.getItem("pianoUserName")
+      currentOctave: null,
+      currentNote: null,
+      enteredNote: null,
+      enteredOctave: null,
+      index: 0,
+      sheetName: 'hello',
+      resultList: [],
+      isFinish: false,
+      userName: localStorage.getItem("pianoUserName")
     }
     console.log(this.state)
   }
@@ -30,11 +30,11 @@ export default withRouter(class Main extends Component {
   checkAnswer = (octave, keyNames, index, sheetName) =>
     fetch(CHECK_NOTE_URL, {
       body: JSON.stringify({
-        'octave'    : octave,
-        'notes'     : keyNames,
-        'index'     : index,
-        'sheetName' : sheetName,
-        'session'   : localStorage.getItem("pianoSession")
+        'octave': octave,
+        'notes': keyNames,
+        'index': index,
+        'sheetName': sheetName,
+        'session': localStorage.getItem("pianoSession")
       }),
       cache: 'no-cache',
       headers: {
@@ -51,13 +51,13 @@ export default withRouter(class Main extends Component {
     .then((data) => {
       if(data.userExistence){
         this.setState({
-        currentNote   : data.note,
-        currentOctave : data.octave,
-        isFinished    : data.isFinished
+        currentNote: data.note,
+        currentOctave: data.octave,
+        isFinished: data.isFinished
         });
       } else { // session is wrong
         this.props.history.push({
-          pathname : '/login',
+          pathname: '/login',
           state: {message: "Please Login first."}
         })
       }
@@ -81,20 +81,20 @@ export default withRouter(class Main extends Component {
 
       if(! data.correct){
         this.state.resultList.push(
-          {'correctNote'   : this.state.currentNote,
-           'correctOctave' : this.state.currentOctave,
-           'enteredOctave' : octave, 
-           'enteredNote'   : keyNames.join(','),
-           'correct'       : false, 
-           'index'         : this.state.index})
+          {'correctNote': this.state.currentNote,
+           'correctOctave': this.state.currentOctave,
+           'enteredOctave': octave, 
+           'enteredNote': keyNames.join(','),
+           'correct': false, 
+           'index': this.state.index})
       } else {
         this.state.resultList.push(
-          {'correctNote'   : this.state.currentNote, 
-           'correctOctave' : this.state.currentOctave,
-           'enteredOctave' : octave, 
-           'enteredNote'   : keyNames.join(','),
-           'correct'       : true, 
-           'index'         : this.state.index})
+          {'correctNote': this.state.currentNote, 
+           'correctOctave': this.state.currentOctave,
+           'enteredOctave': octave, 
+           'enteredNote': keyNames.join(','),
+           'correct': true, 
+           'index': this.state.index})
       }
       this.setState({
         enteredNote: keyNames.join(','), 
