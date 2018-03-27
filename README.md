@@ -50,6 +50,8 @@ Demonstrate what you can do by adding your own functionality, e.g.
 # Next Steps
 Implement as much as you reasonably can, and document any ideas that you don't have the time to build - we may have the opportunity to try and implement some of them together.
 
-### Server Implementation:
+### Server build and run:
+1. Before running the project install needed dependencies by command ```python3 -m pip install -r requirement.txt``` or ```pip install -r requirement.txt.```
+2. Run the serverside by command ```python3 run_server.py``` or ```python run_server.py```.
 
-### Client Implementation:
+### Client build and run:
