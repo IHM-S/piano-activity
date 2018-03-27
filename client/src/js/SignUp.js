@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import './SignUp.css';
 import { withRouter } from 'react-router'
-import Navbar from './Navbar'
+import Navbar from 'client/js/Navbar'
+import 'client/static/SignUp.css';
 
 const SIGNIN = 'http://localhost:5000/usersignin'
 

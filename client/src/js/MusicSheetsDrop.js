@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import "./MusicSheetsDrop.css";
+import "client/static/MusicSheetsDrop.css";
 
 const GET_ALL_MUSIC_SHEETS = 'http://localhost:5000/getallsheets';
 

@@ -4,11 +4,11 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
-import SignUp from './SignUp';
-import Login from './Login';
-import Main from './Main';
-import Result from './Result';
-import NewSheet from './NewSheet';
+import SignUp from 'client/js/SignUp';
+import Login from 'client/js/Login';
+import Main from 'client/js/Main';
+import Result from 'client/js/Result';
+import NewSheet from 'client/js/NewSheet';
 
 // this function is the react route, it redirect pages.
 export default () => (

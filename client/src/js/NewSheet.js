@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import Navbar from './Navbar';
-import "./NewSheet.css";
+import Navbar from 'client/js/Navbar';
+import "client/static/NewSheet.css";
 
 const ADD_NEW_SHEET = 'http://localhost:5000/addnewsheet';
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import MusicSheetsDrop from './MusicSheetsDrop'
+import MusicSheetsDrop from 'client/js/MusicSheetsDrop'
 
 // this class render the navbar, user input the flag to makrsure which part to show
 export default withRouter(class Navbar extends Component {

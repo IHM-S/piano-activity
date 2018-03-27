@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import Navbar from './Navbar';
-import './Login.css';
+import Navbar from 'client/js/Navbar';
+import 'client/static/Login.css';
 
 const LOGIN = 'http://localhost:5000/userlogin'
 const CHECK_SESSION = 'http://localhost:5000/checksession'

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import ResultEle from './ResultEle';
-import Navbar from './Navbar'
+import ResultEle from 'client/js/ResultEle';
+import Navbar from 'client/js/Navbar'
 
 // this class render the result summary 
 export default withRouter(class Result extends Component {
