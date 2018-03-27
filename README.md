@@ -38,14 +38,14 @@ The server and client need to be finished off such that:
 ### Extension Ideas:
 
 Demonstrate what you can do by adding your own functionality, e.g.
-* storage of data in a data store (e.g. sqlite)
-* support for multiple users: logging into a user session and storing where each user is up to in the activity
+* storage of data in a data store (e.g. sqlite) (done)
+* support for multiple users: logging into a user session and storing where each user is up to in the activity (done)
 * improvement of look and feel, e.g. show off some CSS artisanry (or add other packages such as SCSS), or add audio when pressing the keys
 * add unit tests that provide good testing coverage
 * add a Redux store to the project such that state is no longer stored within App.js
-* user results are reported on a separate page which can also be navigated to as a single page app (SPA)
+* user results are reported on a separate page which can also be navigated to as a single page app (SPA) (done)
 * additional functionality of your choosing which adds educational value to the activity (be creative!)
-* add a way for users to share their results, or upload their own sequences/tunes to teach each other
+* add a way for users to share their results, or upload their own sequences/tunes to teach each other (done)
 
 # Next Steps
 Implement as much as you reasonably can, and document any ideas that you don't have the time to build - we may have the opportunity to try and implement some of them together.

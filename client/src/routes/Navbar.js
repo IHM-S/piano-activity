@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import MusicSheetsDrop from './MusicSheetsDrop'
 
+// this class render the navbar, user input the flag to makrsure which part to show
 export default withRouter(class Navbar extends Component {
   constructor(props){
     super(props);
@@ -18,7 +19,7 @@ export default withRouter(class Navbar extends Component {
   }
 
   clickLogout = () => {
-    console.log("click logout")
+    console.log("click logout");
     localStorage.removeItem("pianoSession");
     this.props.history.push({
       pathname : '/login'
@@ -26,28 +27,28 @@ export default withRouter(class Navbar extends Component {
   }
 
   clickPiano = () => {
-    console.log("click piano")
+    console.log("click piano");
     this.props.history.push({
       pathname : '/main'
     });
   }
 
   clickAdd = () => {
-    console.log("click add new sheet") 
+    console.log("click add new sheet");
     this.props.history.push({
       pathname : '/newsheet'
     });
   }
 
   clickLogin = () =>{
-    console.log("click login") 
+    console.log("click login");
     this.props.history.push({
       pathname : '/login'
     });
   }
 
   clickSignup = () =>{
-    console.log("click signup") 
+    console.log("click signup"); 
     this.props.history.push({
       pathname : '/signup'
     });

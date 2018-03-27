@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router'
-import Navbar from './Navbar'
+import { withRouter } from 'react-router';
+import Navbar from './Navbar';
 import './Login.css';
-
 
 const LOGIN = 'http://localhost:5000/userlogin'
 const CHECK_SESSION = 'http://localhost:5000/checksession'
 
+// this class renders the login page
 export default withRouter(class Login extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
         userName: '',
         password: '',
         message: (this.props.location.state && this.props.location.state.message) ? this.props.location.state.message : null
     }
-    console.log("State of Login")
-    console.log(this.state)
-    console.log("Props of Login")
-    console.log(this.props)
+    console.log("State of Login");
+    console.log(this.state);
+    console.log("Props of Login");
+    console.log(this.props);
   }
 
   login = () => {
@@ -55,7 +55,7 @@ export default withRouter(class Login extends Component {
   }
 
   componentDidMount(){ // after first time component is mounted
-    let session = localStorage.getItem("pianoSession")
+    let session = localStorage.getItem("pianoSession");
     if(session) { // if session is defined
       fetch(CHECK_SESSION, { //  check if session is valid
         'body': JSON.stringify(
@@ -75,17 +75,17 @@ export default withRouter(class Login extends Component {
           this.props.history.push({
             pathname : '/test',
             state: {message: "successfully login."}
-          })
+          });
         } else { // session is incorrect
-          console.log("session is incorrect")
-          localStorage.setItem("state", "incorrect")
+          console.log("session is incorrect");
+          localStorage.setItem("state", "incorrect");
           localStorage.removeItem("pianoSession");
           this.setState({message: 'Session is incorrect.'});
         }
       }).catch((err) => { // server side error
-        console.log("server is down")
-        localStorage.setItem("state", "down")
-        localStorage.removeItem("pianoSession")
+        console.log("server is down");
+        localStorage.setItem("state", "down");
+        localStorage.removeItem("pianoSession");
         this.setState({message: 'Unable to connect to the server.'});
       });
     }
@@ -112,3 +112,4 @@ export default withRouter(class Login extends Component {
     )
   }
 })
+

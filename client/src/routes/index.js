@@ -11,7 +11,7 @@ import Main from './Main';
 import Result from './Result';
 import NewSheet from './NewSheet';
 
-
+// this function is the react route, it redirect pages.
 export default () => (
   <BrowserRouter>
     <Switch>

@@ -1,10 +1,12 @@
 import React from 'react';
 import './Piano.css';
 
+// these functions are used to render the piano
 const Key = (props) => 
   <div
     className={`Key-container ${props.color}`}
     onClick={props.onPress.bind(null, props.keyNames)}
+    onMouseOver={props.mouseOver.bind(null, props.keyNames)}
   ></div>
 
 const Octave = (props) =>
@@ -29,6 +31,7 @@ const Piano = (props) =>
       <Octave
         key={`Octave-${octave}`}
         onPress={props.onPress.bind(null, octave)}
+        mouseOver={props.mouseOver.bind(null, octave)}
       />
     )}
   </div>

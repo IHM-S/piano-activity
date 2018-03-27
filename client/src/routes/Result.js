@@ -3,12 +3,13 @@ import { withRouter } from 'react-router';
 import ResultEle from './ResultEle';
 import Navbar from './Navbar'
 
+// this class render the result summary 
 export default withRouter(class Result extends Component {
   constructor(props){
-    super(props)
+    super(props);
     this.state = {
       resultList: (this.props.location.state && this.props.location.state.resultList) ? this.props.location.state.resultList : null
-    }
+    };
   }
 
   render() {

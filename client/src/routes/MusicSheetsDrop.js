@@ -6,6 +6,7 @@ import "./MusicSheetsDrop.css";
 
 const GET_ALL_MUSIC_SHEETS = 'http://localhost:5000/getallsheets';
 
+// thhis class renders the drop down list in the Navbar
 export default withRouter(class MusicSheetsDrop extends Component {
   constructor(props) {
     super(props);
@@ -26,9 +27,9 @@ export default withRouter(class MusicSheetsDrop extends Component {
     fetch(GET_ALL_MUSIC_SHEETS)
     .then(response => response.json())
     .then((data) => {
-      console.log("get all music sheets")
-      console.log(data)
-      this.setState({ sheetsList : data.musicSheetNames})
+      console.log("get all music sheets");
+      console.log(data);
+      this.setState({ sheetsList : data.musicSheetNames});
     });
   }
 

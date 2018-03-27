@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 
+// this class represent the data need to render in the result page, each of this class represent the correctness of the user's answer
 export default class ResultEle extends Component {
     constructor(props) {
         super(props);
-        this.state = this.props.result
+        this.state = this.props.result;
     }
 
     render() {

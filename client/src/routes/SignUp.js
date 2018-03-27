@@ -12,11 +12,11 @@ export default withRouter(class SignUp extends Component {
         userName: '',
         password: '',
         message: null
-      }
-      console.log("State of Sign Up")
-      console.log(this.state)
-      console.log("Props of Sign Up")
-      console.log(this.props)
+      };
+      console.log("State of Sign Up");
+      console.log(this.state);
+      console.log("Props of Sign Up");
+      console.log(this.props);
 
     }
 

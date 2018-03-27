@@ -5,6 +5,7 @@ import "./NewSheet.css";
 
 const ADD_NEW_SHEET = 'http://localhost:5000/addnewsheet';
 
+// this class renders the new sheet page, which the user add new music sheet
 export default withRouter(class NewSheet extends Component {
   constructor(props) {
     super(props);
@@ -14,7 +15,7 @@ export default withRouter(class NewSheet extends Component {
       content: null,
       message: null,
     }
-    console.log(this.state)
+    console.log(this.state);
   }
 
   submitNewSheet = () => {
