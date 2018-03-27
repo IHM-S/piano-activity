@@ -17,13 +17,35 @@ client/
     index.html
     favicon.ico
   src/
-    App.css
     App.js
     App.test.js
-    index.css
     index.js
-    Piano.css
-    Piano.js
+    registerServiceWorker.js
+    routes/
+      Login.css
+      Login.js
+      Main.css
+      Main.js
+      MusicSheetsDrop.css
+      MusicSheetsDrop.js
+      Navbar.js
+      NewSheet.css
+      NewSheet.js
+      Piano.css
+      Piano.js
+      Result.js
+      ResultEle.js
+      SignUp.css
+      SignUp.js
+      index.js
+    sounds/
+      0.wav
+      1.wav
+        .
+        .
+        .
+      34.wav
+      35.wav
 ```
 
 For the project to build, **these files must exist with exact filenames**:

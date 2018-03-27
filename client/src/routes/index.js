@@ -18,7 +18,6 @@ export default () => (
         <Route exact path="/"         render={props => <Main     {...props}/>} />
         <Route exact path="/signup"   render={props => <SignUp   {...props}/>} />
         <Route exact path="/login"    render={props => <Login    {...props}/>} />
-        <Route exact path="/test"     render={props => <Test     {...props}/>} />
         <Route exact path="/main"     render={props => <Main     {...props}/>} />
         <Route exact path="/result"   render={props => <Result   {...props}/>} />
         <Route exact path="/newsheet" render={props => <NewSheet {...props}/>} />
