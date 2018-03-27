@@ -6,7 +6,6 @@ import {
 } from 'react-router-dom';
 import SignUp from './SignUp';
 import Login from './Login';
-import Test from './Test';
 import Main from './Main';
 import Result from './Result';
 import NewSheet from './NewSheet';
