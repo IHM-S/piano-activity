@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import Navbar from 'client/js/Navbar';
-import 'client/static/Login.css';
+import Navbar from './Navbar';
+import '../static/Login.css';
 
 const LOGIN = 'http://localhost:5000/userlogin'
 const CHECK_SESSION = 'http://localhost:5000/checksession'
@@ -11,14 +11,10 @@ export default withRouter(class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        userName: '',
-        password: '',
-        message: (this.props.location.state && this.props.location.state.message) ? this.props.location.state.message : null
+      userName:null,
+      password:null,
+      message: (this.props.location.state && this.props.location.state.message) ? this.props.location.state.message : null
     }
-    console.log("State of Login");
-    console.log(this.state);
-    console.log("Props of Login");
-    console.log(this.props);
   }
 
   login = () => {
@@ -27,30 +23,30 @@ export default withRouter(class Login extends Component {
       fetch(LOGIN, {
         'body': JSON.stringify(
           {
-            'userName'  : this.state.userName,
-            'password'  : this.state.password,
+            'userName':this.state.userName,
+            'password':this.state.password,
           }),
           'cache': 'no-cache',
           'headers': {
-                      'content-type': 'application/json'
-                      },
+            'content-type':'application/json'
+          },
           'method': 'POST'
       }).then((response) => response.json()).then((response) => {
         if(response.userExistence){ // successfully login a new user, redirect to start page
           localStorage.setItem('pianoSession', response.session);
           localStorage.setItem('pianoUserName', response.userName);
           this.props.history.push({
-            pathname : '/main',
-            state: {message: "successfully login"}
+            pathname:'/main',
+            state:{message:"successfully login"}
           })
         } else { // username doesn't exist or username or password is wrong.
-          this.setState({message: "Username doesn't exist or username or password is wrong."});
+          this.setState({message:"Username doesn't exist or username or password is wrong."});
         }
       }).catch((err) => { // server side wrong
-        this.setState({message: 'Unable to connect to the server.'});
+        this.setState({message:'Unable to connect to the server.'});
       });
     } else { // username or password doesn't match regex
-      this.setState({message: "UserName or password doesn't match corresponded regex."});
+      this.setState({message:"UserName or password doesn't match corresponded regex."});
     } 
   }
 
@@ -60,30 +56,27 @@ export default withRouter(class Login extends Component {
       fetch(CHECK_SESSION, { //  check if session is valid
         'body': JSON.stringify(
           {
-            'session' : session
+            'session':session
           }),
           'cache': 'no-cache',
           'headers': {
-                      'content-type': 'application/json'
-                      },
+            'content-type':'application/json'
+          },
           'method': 'POST'
       }).then((response) => response.json()).then((response) => {
         if(response.userExistence) {
           // redirect to start page because user already has an session
-          console.log("session is correct");
           localStorage.setItem("state", "correct");
           this.props.history.push({
             pathname : '/test',
             state: {message: "successfully login."}
           });
         } else { // session is incorrect
-          console.log("session is incorrect");
           localStorage.setItem("state", "incorrect");
           localStorage.removeItem("pianoSession");
           this.setState({message: 'Session is incorrect.'});
         }
       }).catch((err) => { // server side error
-        console.log("server is down");
         localStorage.setItem("state", "down");
         localStorage.removeItem("pianoSession");
         this.setState({message: 'Unable to connect to the server.'});
@@ -94,16 +87,16 @@ export default withRouter(class Login extends Component {
 
   render() {
     // doesn't matter what the state is firstly render the page
-    console.log("message")
-    console.log(this.state.message)
     return(
       <div>
         <Navbar signup={true}/>
         <div className="wrapper" onSubmit={(e) => {e.preventDefault(); this.login();}}> 
           <form className="form-signin">
             <h2 className="form-signin-heading">Piano Act</h2>
-            <input type="text" className="form-control" onChange={(e) => {this.setState({'userName' : e.target.value}); console.log("userName: " + this.state.userName);}}  name="username" placeholder="Username: [a-zA-Z0-9_]{4, 15}" required="true" autoFocus="" />
-            <input type="password" className="form-control" onChange={(e) => {this.setState({'password' : e.target.value}); console.log("password: " + this.state.password);}} name="password" placeholder="Password: [a-zA-Z0-9_.,!@#$%]{6, 16}" required="true"/>
+            <input type="text" className="form-control" onChange={(e) => {this.setState({ 'userName':e.target.value });}}
+              name="username" placeholder="Username: [a-zA-Z0-9_]{4, 15}" required="true" autoFocus="" />
+            <input type="password" className="form-control" onChange={(e) => {this.setState({ 'password':e.target.value });}}
+              name="password" placeholder="Password: [a-zA-Z0-9_.,!@#$%]{6, 16}" required="true"/>
             <button className="btn btn-lg btn-primary btn-block" type="submit">Login</button>
             <p>{this.state.message}</p>
           </form>

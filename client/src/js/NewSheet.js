@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import Navbar from 'client/js/Navbar';
-import "client/static/NewSheet.css";
+import Navbar from './Navbar';
+import "../static/NewSheet.css";
 
 const ADD_NEW_SHEET = 'http://localhost:5000/addnewsheet';
 
@@ -20,7 +20,8 @@ export default withRouter(class NewSheet extends Component {
 
   submitNewSheet = () => {
     // if username and password match regex then pass them into backend
-    if (/^[a-zA-Z0-9][a-zA-Z0-9 ]{2,28}[a-zA-Z0-9]$/.test(this.state.sheetName) && /^\[[012],([CDEFGAB]|[CDFGA]#|[DEGAB]b)\](\.\[[012],([CDEFGAB]|[CDFGA]#|[DEGAB]b)\])*$/.test(this.state.content)) {
+    if (/^[a-zA-Z0-9][a-zA-Z0-9 ]{2,28}[a-zA-Z0-9]$/.test(this.state.sheetName) && 
+        /^\[[012],([CDEFGAB]|[CDFGA]#|[DEGAB]b)\](\.\[[012],([CDEFGAB]|[CDFGA]#|[DEGAB]b)\])*$/.test(this.state.content)) {
       fetch(ADD_NEW_SHEET, {
         'body': JSON.stringify(
           {
@@ -34,8 +35,8 @@ export default withRouter(class NewSheet extends Component {
                       },
           'method': 'POST'
       }).then((response) => response.json()).then((response) => {
-        if(response.userExistence) {
-          if(response.succeed){
+        if (response.userExistence) {
+          if (response.succeed) {
             this.props.history.push({
               pathname: '/main'
             })

@@ -1,44 +1,44 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import Piano from 'client/js/Piano.js';
-import Navbar from 'client/js/Navbar';
-import 'client/static/Main.css';
-import music0 from 'client/static/sounds/0.wav';
-import music1 from 'client/static/sounds/1.wav';
-import music2 from 'client/static/sounds/2.wav';
-import music3 from 'client/static/sounds/3.wav';
-import music4 from 'client/static/sounds/4.wav';
-import music5 from 'client/static/sounds/5.wav';
-import music6 from 'client/static/sounds/6.wav';
-import music7 from 'client/static/sounds/7.wav';
-import music8 from 'client/static/sounds/8.wav';
-import music9 from 'client/static/sounds/9.wav';
-import music10 from 'client/static/sounds/10.wav';
-import music11 from 'client/static/sounds/11.wav';
-import music12 from 'client/static/sounds/12.wav';
-import music13 from 'client/static/sounds/13.wav';
-import music14 from 'client/static/sounds/14.wav';
-import music15 from 'client/static/sounds/15.wav';
-import music16 from 'client/static/sounds/16.wav';
-import music17 from 'client/static/sounds/17.wav';
-import music18 from 'client/static/sounds/18.wav';
-import music19 from 'client/static/sounds/19.wav';
-import music20 from 'client/static/sounds/20.wav';
-import music21 from 'client/static/sounds/21.wav';
-import music22 from 'client/static/sounds/22.wav';
-import music23 from 'client/static/sounds/23.wav';
-import music24 from 'client/static/sounds/24.wav';
-import music25 from 'client/static/sounds/25.wav';
-import music26 from 'client/static/sounds/26.wav';
-import music27 from 'client/static/sounds/27.wav';
-import music28 from 'client/static/sounds/28.wav';
-import music29 from 'client/static/sounds/29.wav';
-import music30 from 'client/static/sounds/30.wav';
-import music31 from 'client/static/sounds/31.wav';
-import music32 from 'client/static/sounds/32.wav';
-import music33 from 'client/static/sounds/33.wav';
-import music34 from 'client/static/sounds/34.wav';
-import music35 from 'client/static/sounds/35.wav';
+import Piano from './Piano.js';
+import Navbar from './Navbar';
+import '../static/Main.css';
+import music0 from '../static/0.wav';
+import music1 from '../static/1.wav';
+import music2 from '../static/2.wav';
+import music3 from '../static/3.wav';
+import music4 from '../static/4.wav';
+import music5 from '../static/5.wav';
+import music6 from '../static/6.wav';
+import music7 from '../static/7.wav';
+import music8 from '../static/8.wav';
+import music9 from '../static/9.wav';
+import music10 from '../static/10.wav';
+import music11 from '../static/11.wav';
+import music12 from '../static/12.wav';
+import music13 from '../static/13.wav';
+import music14 from '../static/14.wav';
+import music15 from '../static/15.wav';
+import music16 from '../static/16.wav';
+import music17 from '../static/17.wav';
+import music18 from '../static/18.wav';
+import music19 from '../static/19.wav';
+import music20 from '../static/20.wav';
+import music21 from '../static/21.wav';
+import music22 from '../static/22.wav';
+import music23 from '../static/23.wav';
+import music24 from '../static/24.wav';
+import music25 from '../static/25.wav';
+import music26 from '../static/26.wav';
+import music27 from '../static/27.wav';
+import music28 from '../static/28.wav';
+import music29 from '../static/29.wav';
+import music30 from '../static/30.wav';
+import music31 from '../static/31.wav';
+import music32 from '../static/32.wav';
+import music33 from '../static/33.wav';
+import music34 from '../static/34.wav';
+import music35 from '../static/35.wav';
 
 var music = [ music0, music1, music2, music3, music4, music5, music6, music7, music8, music9, music10, music11, music12, music13, music14, music15, music16, music17, music18, music19, music20, music21, music22, music23, music24, music25, music26, music27, music28, music29, music30, music31, music32, music33, music34, music35 ];
 const notes = { C:0, 'C#':1, D:2, 'D#':3, E:4, F:5, 'F#':6, G:7, 'G#':8, A:9, 'A#':10, B:11 }
@@ -52,32 +52,29 @@ const GET_CURRENT_STATUS = 'http://localhost:5000/getcurrentstatus';
 export default withRouter(class Main extends Component {
   constructor(props) {
     super(props);
-    console.log("main pass in props");
-    console.log(props);
     this.state = {
-      currentOctave: null,
-      currentNote: null,
-      enteredNote: null,
-      enteredOctave: null,
-      index: 0,
-      sheetName: 'hello',
-      resultList: [],
-      isFinish: false,
-      userName: localStorage.getItem("pianoUserName"),
-      music: null
+      currentOctave:null,
+      currentNote:null,
+      enteredNote:null,
+      enteredOctave:null,
+      index:0,
+      sheetName:'hello',
+      resultList:[],
+      isFinish:false,
+      userName:localStorage.getItem("pianoUserName"),
+      music:null
     }
-    console.log(this.state);
   }
 
   // check the user entered answer to see if they are correct
   checkAnswer = (octave, keyNames, index, sheetName) =>
     fetch(CHECK_NOTE_URL, {
       body: JSON.stringify({
-        'octave': octave,
-        'notes': keyNames,
-        'index': index,
-        'sheetName': sheetName,
-        'session': localStorage.getItem("pianoSession")
+        'octave':octave,
+        'notes':keyNames,
+        'index':index,
+        'sheetName':sheetName,
+        'session':localStorage.getItem("pianoSession")
       }),
       cache: 'no-cache',
       headers: {
@@ -90,26 +87,24 @@ export default withRouter(class Main extends Component {
   sendCurrentStatus = () => {
     fetch(SEND_CURRENT_STATUS, {
       body: JSON.stringify({
-        'resultList': this.state.resultList,
-        'index': this.state.index,
-        'userName': this.state.userName,
-        'sheetName': this.state.sheetName,
+        'resultList':this.state.resultList,
+        'index':this.state.index,
+        'userName':this.state.userName,
+        'sheetName':this.state.sheetName,
       }),
       cache: 'no-cache',
       headers: {
-        'content-type': 'application/json'
+        'content-type':'application/json'
       },
       method: 'POST'
     }).then(response => response.json()).then((data) => {
-      console.log("send status");
-      console.log(data);
-      if(data.succeed) {
+      if (data.succeed) {
         this.setState({
-          error: "Successfully saved your progress."
+          error:"Successfully saved your progress."
         })
       } else {
         this.setState({
-          error: "Sorry, failed to save your progress."
+          error:"Sorry, failed to save your progress."
         })
       }
     }).catch((err) => {
@@ -122,9 +117,7 @@ export default withRouter(class Main extends Component {
     fetch(GET_CURRENT_STATUS + `?userName=${this.state.userName}`)
     .then(response => response.json())
     .then((data) => {
-      console.log("get status");
-      console.log(data);
-      if(data.succeed){
+      if (data.succeed) {
         this.setState({
           currentNote: data.currentNote,
           currentOctave: data.currentOctave,
@@ -145,7 +138,7 @@ export default withRouter(class Main extends Component {
     fetch(GET_NOTE_URL + `?sheetName=${sheetName}&index=${index}&session=${localStorage.getItem("pianoSession")}`)
     .then(response => response.json())
     .then((data) => {
-      if(data.userExistence){
+      if (data.userExistence) {
         this.setState({
         currentNote: data.note,
         currentOctave: data.octave,
@@ -165,16 +158,16 @@ export default withRouter(class Main extends Component {
 
   // what happen when key of piano is pressed
   onPress = (octave, keyNames) => {
-    console.log('key pressed: ' + keyNames)
+    
     this.checkAnswer(octave, keyNames, this.state.index, this.state.sheetName).then((data) => {
-      console.log(data);
-      if(!data.userExistence){ // session is wrong
+      
+      if (!data.userExistence) { // session is wrong
         this.props.history.push({
           pathname : '/Login',
           state: {message: "Please Login first."}
         })
       }
-      if(! data.correct){
+      if (! data.correct) {
         this.state.resultList.push(
           {'correctNote': this.state.currentNote,
            'correctOctave': this.state.currentOctave,
@@ -196,14 +189,12 @@ export default withRouter(class Main extends Component {
         enteredOctave: octave,
         index: this.state.index + 1,
       })
-      this.fetchAndSet(this.state.sheetName, this.state.index);
-      console.log(this.state.currentNote);
+      this.fetchAndSet(this.state.sheetName, this.state.index);     
     });
   }
 
   mouseOver = (octave, keyNames) => {
     let i = octave * 12 + notes[keyNames[0]]
-    console.log("key index: ", i)
     this.setState({music: music[i]})
   }
 
@@ -221,7 +212,7 @@ export default withRouter(class Main extends Component {
 
   componentDidUpdate(){
     if(this.state.isFinished){
-      console.log(this.state.resultList);
+      
       this.props.history.push({
         pathname: '/result',
         state: {resultList: this.state.resultList},
@@ -230,10 +221,8 @@ export default withRouter(class Main extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.history.location.state && nextProps.history.location.state.sheetName){
-      console.log("next props");
+    if(nextProps.history.location.state && nextProps.history.location.state.sheetName){   
       this.fetchAndSet(nextProps.history.location.state.sheetName, 0);
-      console.log(this.state);
       this.setState({
         sheetName : nextProps.history.location.state.sheetName,
         index : 0,
@@ -267,7 +256,6 @@ export default withRouter(class Main extends Component {
           mouseOver={this.mouseOver}
         />
         {this.state.music ? <audio ref="audio_tag" src={this.state.music} autoPlay/> : null}
-        
       </div>
     );
   }

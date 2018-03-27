@@ -1,5 +1,5 @@
 import React from 'react';
-import 'client/static/Piano.css';
+import '../static/Piano.css';
 
 // these functions are used to render the piano
 const Key = (props) => 

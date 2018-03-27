@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import ResultEle from 'client/js/ResultEle';
-import Navbar from 'client/js/Navbar'
+import ResultEle from './ResultEle';
+import Navbar from './Navbar'
 
 // this class render the result summary 
 export default withRouter(class Result extends Component {
@@ -14,7 +14,7 @@ export default withRouter(class Result extends Component {
 
   render() {
     console.log(this.state)
-    if(this.state.resultList){
+    if (this.state.resultList) {
       return (
         <div className="Result">
           <Navbar addNewMusic={false} logout={false} musicSheets={false}/>

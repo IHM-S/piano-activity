@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import "client/static/MusicSheetsDrop.css";
+import "../static/MusicSheetsDrop.css";
 
 const GET_ALL_MUSIC_SHEETS = 'http://localhost:5000/getallsheets';
 
@@ -27,12 +27,9 @@ export default withRouter(class MusicSheetsDrop extends Component {
     fetch(GET_ALL_MUSIC_SHEETS)
     .then(response => response.json())
     .then((data) => {
-      console.log("get all music sheets");
-      console.log(data);
       this.setState({ sheetsList : data.musicSheetNames});
     });
   }
-
 
   render() {
     return (
