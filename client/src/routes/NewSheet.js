@@ -59,7 +59,7 @@ export default withRouter(class NewSheet extends Component {
   render() {
     return (
       <div>
-        <Navbar addNewMusic={false} logout={true} musicSheets={false}/>
+        <Navbar logout={true}/>
         <div className="wrapper" onSubmit={(e) => {e.preventDefault(); this.submitNewSheet();}}>
           <form className="form-new-sheet">
             <h2 className="form-new-sheet-header">Adding New Music Sheet</h2>

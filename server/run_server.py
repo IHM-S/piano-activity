@@ -147,6 +147,33 @@ def add_new_sheet():
     else:
         return jsonify({'userExistence' : False})
 
+@app.route('/sendcurrentstatus', methods=['POST'])
+def send_current_status():
+    """
+    send status of a user and store it in db, if fail return false
+    """
+    try:
+        info_dict = request.get_json()
+        print(info_dict)
+        db_connector.store_status(info_dict)
+        return jsonify({'succeed' : True}) 
+    except:
+        print(sys.exc_info()[0])
+        return jsonify({'succeed' : False}) 
+
+@app.route('/getcurrentstatus', methods=['GET'])
+def get_current_status():
+    """
+    get current status of the user_name
+    """ 
+    result_dict = db_connector.get_status(request.args.get('userName'))
+    if result_dict:
+        result_dict['succeed'] = True
+        print(result_dict)
+        return jsonify(result_dict)
+    else:
+        return jsonify({'succeed' : False}) 
+
 
 
 @app.route('/<path:path>', methods=['GET'])

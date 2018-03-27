@@ -5,7 +5,10 @@ import Navbar from './Navbar';
 import './Main.css';
 
 const GET_NOTE_URL = 'http://localhost:5000/nextnote';
-const CHECK_NOTE_URL = 'http://localhost:5000/checknote'
+const CHECK_NOTE_URL = 'http://localhost:5000/checknote';
+
+const SEND_CURRENT_STATUS = 'http://localhost:5000/sendcurrentstatus';
+const GET_CURRENT_STATUS = 'http://localhost:5000/getcurrentstatus';
 
 export default withRouter(class Main extends Component {
   constructor(props) {
@@ -42,7 +45,58 @@ export default withRouter(class Main extends Component {
       },
       method: 'POST'
     }).then(response => response.json());
-    
+  
+  sendCurrentStatus = () => {
+    fetch(SEND_CURRENT_STATUS, {
+      body: JSON.stringify({
+        'resultList': this.state.resultList,
+        'index': this.state.index,
+        'userName': this.state.userName,
+        'sheetName': this.state.sheetName,
+      }),
+      cache: 'no-cache',
+      headers: {
+        'content-type': 'application/json'
+      },
+      method: 'POST'
+    }).then(response => response.json()).then((data) => {
+      console.log("send status")
+      console.log(data)
+      if(data.succeed) {
+        this.setState({
+          error: "Successfully saved your progress."
+        })
+      } else {
+        this.setState({
+          error: "Sorry, failed to save your progress."
+        })
+      }
+    }).catch((err) => {
+      this.setState({error: 'An error occurred: Unable to connect to the server'});
+    });
+  };
+
+  getCurrentStatus = () => {
+    fetch(GET_CURRENT_STATUS + `?userName=${this.state.userName}`)
+    .then(response => response.json())
+    .then((data) => {
+      console.log("get status")
+      console.log(data)
+      if(data.succeed){
+        this.setState({
+          currentNote: data.currentNote,
+          currentOctave: data.currentOctave,
+          index: data.index,
+          resultList: data.resultList,
+          sheetName: data.sheetName
+        })
+      } else {
+        this.setState({error: "You don't have any progress saved."});
+      }
+    }).catch((err) => {
+      this.setState({error: 'An error occurred: Unable to connect to the server'});
+    });
+  };
 
   // fetch next node from server and set the state
   fetchAndSet = (sheetName, index) => {
@@ -65,7 +119,7 @@ export default withRouter(class Main extends Component {
     }).catch((err) => {
       this.setState({error: 'Unable to connect to the server'});
     });
-  }
+  };
 
   // what happen when key of piano is pressed
   onPress = (octave, keyNames) => {
@@ -78,7 +132,6 @@ export default withRouter(class Main extends Component {
           state: {message: "Please Login first."}
         })
       }
-
       if(! data.correct){
         this.state.resultList.push(
           {'correctNote': this.state.currentNote,
@@ -104,19 +157,19 @@ export default withRouter(class Main extends Component {
       this.fetchAndSet(this.state.sheetName, this.state.index);
       console.log(this.state.currentNote);
     });
-  }
+  };
 
   getNote() {
     return this.state.currentNote.replace('#', '♯').replace('b', '♭');
-  }
+  };
 
   getOctave() {
     return this.state.currentOctave;
-  }
+  };
 
   componentDidMount(){
     this.fetchAndSet(this.state.sheetName, this.state.index);
-  }
+  };
 
   componentDidUpdate(){
     if(this.state.isFinished){
@@ -126,10 +179,11 @@ export default withRouter(class Main extends Component {
         state: {resultList: this.state.resultList},
       });
     }
-  }
+  };
 
   componentWillReceiveProps(nextProps){
     if(nextProps.history.location.state && nextProps.history.location.state.sheetName){
+      console.log("next props")
       this.fetchAndSet(nextProps.history.location.state.sheetName, 0);
       console.log(this.state);
       this.setState({
@@ -138,14 +192,14 @@ export default withRouter(class Main extends Component {
         resultList: []
       });
     }
-  }
+  };
 
   render() {
     return (
       <div className="App">
-        <Navbar addNewMusic={true} logout={true} musicSheets={true}/>
+        <Navbar addNewMusic={true} logout={true} musicSheets={true} status={true} sendCurrentStatus={this.sendCurrentStatus} getCurrentStatus={this.getCurrentStatus}/>
         <header className="App-header">
-          {this.state.error ? `An error occurred: ${this.state.error}` : null}
+          {this.state.error ? `${this.state.error}` : null}
           {
             this.state.currentNote ?
               <div className="App-display">

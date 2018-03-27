@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './SignUp.css';
 import { withRouter } from 'react-router'
-
+import Navbar from './Navbar'
 
 const SIGNIN = 'http://localhost:5000/usersignin'
 
@@ -55,14 +55,17 @@ export default withRouter(class SignUp extends Component {
 
     render() {
         return (
-          <div className="wrapper" onSubmit={(e) => {e.preventDefault(); this.signUp();}}>
-            <form className="form-signin">
-              <h2 className="form-signin-heading">Sign up form</h2>
-              <input type="text" className="form-control" onChange={(e) => {this.setState({'userName' : e.target.value}); console.log("userName: " + this.state.userName);}}  name="username" placeholder="Username: [a-zA-Z0-9_]{4, 15}" required="true" autoFocus="" />
-              <input type="password" className="form-control" onChange={(e) => {this.setState({'password' : e.target.value}); console.log("password: " + this.state.password);}} name="password" placeholder="Password: [a-zA-Z0-9_.,!@#$%]{6, 16}" required="true"/>
-              <button className="btn btn-lg btn-primary btn-block" type="submit">SignUp</button>
-              <p>{this.state.message}</p>
-            </form>
+          <div>
+            <Navbar login={true}/>
+            <div className="wrapper" onSubmit={(e) => {e.preventDefault(); this.signUp();}}>
+              <form className="form-signin">
+                <h2 className="form-signin-heading">Sign up form</h2>
+                <input type="text" className="form-control" onChange={(e) => {this.setState({'userName' : e.target.value}); console.log("userName: " + this.state.userName);}}  name="username" placeholder="Username: [a-zA-Z0-9_]{4, 15}" required="true" autoFocus="" />
+                <input type="password" className="form-control" onChange={(e) => {this.setState({'password' : e.target.value}); console.log("password: " + this.state.password);}} name="password" placeholder="Password: [a-zA-Z0-9_.,!@#$%]{6, 16}" required="true"/>
+                <button className="btn btn-lg btn-primary btn-block" type="submit">SignUp</button>
+                <p>{this.state.message}</p>
+              </form>
+            </div>
           </div>
           )
     }

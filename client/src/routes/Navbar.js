@@ -8,9 +8,12 @@ export default withRouter(class Navbar extends Component {
     console.log("Navbar");
     console.log(props);
     this.state = {
-      addNewMusic : this.props.addNewMusic ? true : false,
-      logout : this.props.logout ? true : false,
-      musicSheets : this.props.musicSheets ? true : false
+      addNewMusic: this.props.addNewMusic ? true : false,
+      logout: this.props.logout ? true : false,
+      musicSheets: this.props.musicSheets ? true : false,
+      status: this.props.status ? true : false,
+      login: this.props.login ? true : false,
+      signup: this.props.signup ? true : false
     }
   }
 
@@ -30,9 +33,23 @@ export default withRouter(class Navbar extends Component {
   }
 
   clickAdd = () => {
-    console.log("click add new sheet")
+    console.log("click add new sheet") 
     this.props.history.push({
       pathname : '/newsheet'
+    });
+  }
+
+  clickLogin = () =>{
+    console.log("click login") 
+    this.props.history.push({
+      pathname : '/login'
+    });
+  }
+
+  clickSignup = () =>{
+    console.log("click signup") 
+    this.props.history.push({
+      pathname : '/signup'
     });
   }
 
@@ -47,7 +64,7 @@ export default withRouter(class Navbar extends Component {
       );
     } else {
       return null;
-    }
+    } 
     
   }
 
@@ -64,8 +81,58 @@ export default withRouter(class Navbar extends Component {
 
   displayMusicSheets = () => {
     if(this.state.musicSheets){
-      return(<MusicSheetsDrop />);
+      return(<MusicSheetsDrop />); 
     } else {
+      return null;
+    }
+  }
+
+  displaySendStatus = () => {
+    if(this.state.status){
+      return(
+        <div>
+          <li className="nav-item">
+            <a className="nav-link"  href="" onClick={(e) => {e.preventDefault(); this.props.getCurrentStatus();}} >Retrieve Status</a>
+          </li>
+        </div>);
+    } else {
+      return null;
+    }
+  }
+
+  displayGetStatus = () => {
+    if(this.state.status){
+      return(
+        <div>
+          <li className="nav-item">
+            <a className="nav-link"  href="" onClick={(e) => {e.preventDefault(); this.props.sendCurrentStatus();}} >Save Status</a>
+          </li>
+        </div>);
+    } else {
+      return null;
+    }
+  }
+
+  displayLogin = () => {
+    if(this.state.login){
+      return(
+        <li className="nav-item">
+          <a className="nav-link"  href="" onClick={this.clickLogin} >Login</a>
+        </li>
+      );
+    } else {
+      return null;
+    }
+  }
+
+  displaySignup = () => {
+    if(this.state.signup){
+      return (
+        <li className="nav-item">
+          <a className="nav-link"  href="" onClick={this.clickSignup} >Signup</a>
+        </li>
+      );
+    } else { 
       return null;
     }
   }
@@ -77,8 +144,12 @@ export default withRouter(class Navbar extends Component {
           <a className="navbar-brand" href="" onClick={this.clickPiano}>Piano</a>
             <ul className="navbar-nav">
               {this.displayAddNewMusic()}
+              {this.displaySendStatus()}
+              {this.displayGetStatus()}
               {this.dsiplayLogout()}
               {this.displayMusicSheets()}
+              {this.displayLogin()}
+              {this.displaySignup()}
             </ul>
         </nav>
       </div>

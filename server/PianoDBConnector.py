@@ -1,5 +1,6 @@
 import sqlite3
 import os.path
+import sys
 
 class PianoDBConnector:
 
@@ -18,21 +19,30 @@ class PianoDBConnector:
     def create_new_db(self):
         cur = self.conn.cursor()
         cur.execute('''CREATE TABLE users
-           (userName     TEXT     PRIMARY KEY NOT NULL,
-            password     TEXT     NOT NULL);''')
-
-        cur.execute('''CREATE TABLE upto
-            (userName    TEXT     PRIMARY KEY NOT NULL,
-             sheetName   TEXT     NOT NULL,
-             i           INTEGER  NOT NULL);''')
+            (userName      TEXT     PRIMARY KEY NOT NULL,
+             password      TEXT     NOT NULL);''')
 
         cur.execute('''CREATE TABLE notes
-           (
-            sheetName    TEXT     NOT NULL,
-            i            INTEGER  NOT NULL,
-            octave       INTEGER  NOT NULL,
-            note         TEXT     NOT NULL,
-            PRIMARY KEY (sheetName, i));''')
+            (sheetName     TEXT     NOT NULL,
+             i             INTEGER  NOT NULL,
+             octave        INTEGER  NOT NULL,
+             note          TEXT     NOT NULL,
+             PRIMARY KEY (sheetName, i));''')
+
+        cur.execute('''CREATE TABLE status
+            (userName      TEXT     PRIMARY KEY NOT NULL,
+             i             INTEGER  NOT NULL,
+             sheetName     TEXT     NOT NULL);''')
+
+        cur.execute('''CREATE TABLE list
+            (userName      TEXT     NOT NULL,
+             correctNote   TEXT     NOT NULL,
+             correctOctave INTEGER  NOT NULL,
+             enteredOctave INTEGER  NOT NULL,
+             enteredNote   TEXT     NOT NULL,
+             correct       BOOLEAN  NOT NULL,
+             i             INTEGER  NOT NULL,
+             PRIMARY KEY (userName, i));''')
 
         self.conn.commit()
 
@@ -113,6 +123,65 @@ class PianoDBConnector:
         for each_sheet in cur.fetchall():
             result_list.append(each_sheet[0])
         return result_list
+
+    def store_status(self, info_dict):
+        # 'resultList': this.state.resultList,
+        # 'index': this.state.index,
+        # 'userName': this.state.userName,
+        # 'sheetName': this.state.sheetName,
+
+           #  {'correctNote': this.state.currentNote,
+           # 'correctOctave': this.state.currentOctave,
+           # 'enteredOctave': octave, 
+           # 'enteredNote': keyNames.join(','),
+           # 'correct': false, 
+           # 'index': this.state.index}
+
+           # userName      TEXT     NOT NULL,
+           #   correctNote   TEXT     NOT NULL,
+           #   correctOctave INTEGER  NOT NULL,
+           #   enteredOctave INTEGER  NOT NULL,
+           #   enteredNote   TEXT     NOT NULL,
+           #   correct       BOOLEAN  NOT NULL,
+           #   index         INTEGER  NOT NULL,
+        cur = self.conn.cursor()
+        cur.execute("INSERT OR REPLACE INTO status (userName, i, sheetName) VALUES (?,?,?)", (info_dict['userName'], info_dict['index'],info_dict['sheetName']))
+        cur.execute("DELETE FROM list WHERE userName=?", (info_dict['userName'],))
+        for each_result in info_dict['resultList']:
+            cur.execute("INSERT INTO list (userName, correctNote, correctOctave, enteredNote, enteredOctave, correct, i) VALUES (?,?,?,?,?,?,?)", 
+                (info_dict['userName'],
+                 each_result['correctNote'],
+                 each_result['correctOctave'],
+                 each_result['enteredNote'],
+                 each_result['enteredOctave'],
+                 each_result['correct'],
+                 each_result['index']))
+        self.conn.commit()
+
+    def get_status(self, user_name):
+        cur = self.conn.cursor()
+        result_dict = dict()
+        try:
+            cur.execute("SELECT i, sheetName FROM status WHERE userName = ?", (user_name,))
+            
+            result_dict['index'], result_dict['sheetName'] = cur.fetchone()
+
+            cur.execute("SELECT octave, note FROM notes WHERE i = ? AND sheetName = ?", (result_dict['index'], result_dict['sheetName']))
+            result_dict['currentOctave'], result_dict['currentNote'] = cur.fetchone()
+
+            result_dict['resultList'] = list()
+            cur.execute("SELECT i, correctNote, correctOctave, enteredNote, enteredOctave, correct FROM list WHERE userName = ? ORDER BY i ASC ", (user_name,))
+            for each_record in cur.fetchall():
+                temp_dict = {'index':each_record[0], 
+                             'correctNote':each_record[1], 'correctOctave':each_record[2],
+                             'enteredNote':each_record[3], 'enteredOctave':each_record[4],
+                             'correct': each_record[5]}
+                result_dict['resultList'].append(temp_dict)
+            return result_dict
+        except sqlite3.OperationalError as e:
+            print(e)
+            return False
+        
 
 
 if __name__ == "__main__":

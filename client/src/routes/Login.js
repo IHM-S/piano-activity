@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router'
+import Navbar from './Navbar'
 import './Login.css';
+
 
 const LOGIN = 'http://localhost:5000/userlogin'
 const CHECK_SESSION = 'http://localhost:5000/checksession'
@@ -95,14 +97,17 @@ export default withRouter(class Login extends Component {
     console.log("message")
     console.log(this.state.message)
     return(
-      <div className="wrapper" onSubmit={(e) => {e.preventDefault(); this.login();}}> 
-        <form className="form-signin">
-          <h2 className="form-signin-heading">Piano Act</h2>
-          <input type="text" className="form-control" onChange={(e) => {this.setState({'userName' : e.target.value}); console.log("userName: " + this.state.userName);}}  name="username" placeholder="Username: [a-zA-Z0-9_]{4, 15}" required="true" autoFocus="" />
-          <input type="password" className="form-control" onChange={(e) => {this.setState({'password' : e.target.value}); console.log("password: " + this.state.password);}} name="password" placeholder="Password: [a-zA-Z0-9_.,!@#$%]{6, 16}" required="true"/>
-          <button className="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-          <p>{this.state.message}</p>
-        </form>
+      <div>
+        <Navbar signup={true}/>
+        <div className="wrapper" onSubmit={(e) => {e.preventDefault(); this.login();}}> 
+          <form className="form-signin">
+            <h2 className="form-signin-heading">Piano Act</h2>
+            <input type="text" className="form-control" onChange={(e) => {this.setState({'userName' : e.target.value}); console.log("userName: " + this.state.userName);}}  name="username" placeholder="Username: [a-zA-Z0-9_]{4, 15}" required="true" autoFocus="" />
+            <input type="password" className="form-control" onChange={(e) => {this.setState({'password' : e.target.value}); console.log("password: " + this.state.password);}} name="password" placeholder="Password: [a-zA-Z0-9_.,!@#$%]{6, 16}" required="true"/>
+            <button className="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+            <p>{this.state.message}</p>
+          </form>
+        </div>
       </div>
     )
   }
