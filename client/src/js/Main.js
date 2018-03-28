@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import Piano from './Piano.js';
+import Piano from './Piano';
 import Navbar from './Navbar';
 import '../static/Main.css';
 
@@ -25,7 +25,8 @@ export default withRouter(class Main extends Component {
       resultList:[],
       isFinish:false,
       userName:localStorage.getItem("pianoUserName"),
-      music:null
+      music:null,
+      error:null
     }
   }
 
@@ -86,7 +87,8 @@ export default withRouter(class Main extends Component {
           currentOctave: data.currentOctave,
           index: data.index,
           resultList: data.resultList,
-          sheetName: data.sheetName
+          sheetName: data.sheetName,
+          error: "You progress has been loaded."
         })
       } else {
         this.setState({error: "You don't have any progress saved."});
@@ -121,9 +123,7 @@ export default withRouter(class Main extends Component {
 
   // what happen when key of piano is pressed
   onPress = (octave, keyNames) => {
-    
     this.checkAnswer(octave, keyNames, this.state.index, this.state.sheetName).then((data) => {
-      
       if (!data.userExistence) { // session is wrong
         this.props.history.push({
           pathname : '/Login',
@@ -137,7 +137,8 @@ export default withRouter(class Main extends Component {
            'enteredOctave': octave, 
            'enteredNote': keyNames.join(','),
            'correct': false, 
-           'index': this.state.index})
+           'index': this.state.index
+          })
       } else {
         this.state.resultList.push(
           {'correctNote': this.state.currentNote, 
@@ -146,11 +147,12 @@ export default withRouter(class Main extends Component {
            'enteredNote': keyNames.join(','),
            'correct': true, 
            'index': this.state.index})
-      }      
+      }    
       this.setState({
         enteredNote: keyNames.join(','), 
         enteredOctave: octave,
         index: this.state.index + 1,
+        error: null
       })
       this.fetchAndSet(this.state.sheetName, this.state.index);     
     });
@@ -179,7 +181,6 @@ export default withRouter(class Main extends Component {
 
   componentDidUpdate(){
     if(this.state.isFinished){
-      
       this.props.history.push({
         pathname: '/result',
         state: {resultList: this.state.resultList},

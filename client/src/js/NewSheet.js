@@ -14,8 +14,7 @@ export default withRouter(class NewSheet extends Component {
       sheetName: null,
       content: null,
       message: null,
-    }
-    console.log(this.state);
+    };
   }
 
   submitNewSheet = () => {
@@ -50,13 +49,12 @@ export default withRouter(class NewSheet extends Component {
           })
         }
       }).catch((err) => { // server side wrong
-        console.log(err);
         this.setState({message: 'Unable to connect to the server.'});
       });
     } else {
       this.setState({message: "SheetName or content doesn't match corresponded regex."});
     } 
-  }
+  };
 
   render() {
     return (
@@ -67,12 +65,18 @@ export default withRouter(class NewSheet extends Component {
             <h2 className="form-new-sheet-header">Adding New Music Sheet</h2>
             <div className="row">
               <label className="col-md-2" htmlFor="sheetName">Sheet Name: </label>
-              <input type="text" className="col-md-10 form-control" id="sheetName" name="sheetName" onChange={(e) => {this.setState({'sheetName' : e.target.value}); console.log("sheetName: " + this.state.sheetName);}} placeholder="SheetName: ^[a-zA-Z0-9][a-zA-Z0-9 ]{2,28}[a-zA-Z0-9]$" required="true" autoFocus="" />
+              <input type="text" className="col-md-10 form-control" id="sheetName" name="sheetName"
+                     onChange={(e) => {this.setState({'sheetName' : e.target.value});}}
+                     placeholder="SheetName: must start with character or number, spaces are allowed in middle and must end with character or numbers"
+                     required="true" autoFocus="" />
             </div>
             <div className="form-group">
               <div className="row">
                 <label className="col-md-2" htmlFor="notecontent">Content: </label>
-                <textarea className="col-md-10 form-control" id="notecontent" rows="5" onChange={(e) => {this.setState({'content' : e.target.value}); console.log("content: " + this.state.content);}} placeholder="Use '[]' to group note and octave, use ',' to seperate note and octave, use '.' to seperate group of octave and notes. Example: [1,C].[0,B].[1,A] " required="true"/>
+                <textarea className="col-md-10 form-control" id="notecontent" rows="5"
+                          onChange={(e) => {this.setState({'content' : e.target.value});}}
+                          placeholder="Use '[]' to group note and octave, use ',' to seperate note and octave, use '.' to seperate group of octave and notes. Example: [1,C#].[0,B].[1,A] "
+                          required="true"/>
               </div>
             </div>
             <div className="">

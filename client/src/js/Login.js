@@ -3,8 +3,8 @@ import { withRouter } from 'react-router';
 import Navbar from './Navbar';
 import '../static/Login.css';
 
-const LOGIN = 'http://localhost:5000/userlogin'
-const CHECK_SESSION = 'http://localhost:5000/checksession'
+const LOGIN = 'http://localhost:5000/userlogin';
+const CHECK_SESSION = 'http://localhost:5000/checksession';
 
 // this class renders the login page
 export default withRouter(class Login extends Component {
@@ -48,7 +48,7 @@ export default withRouter(class Login extends Component {
     } else { // username or password doesn't match regex
       this.setState({message:"UserName or password doesn't match corresponded regex."});
     } 
-  }
+  };
 
   componentDidMount(){ // after first time component is mounted
     let session = localStorage.getItem("pianoSession");
@@ -94,9 +94,9 @@ export default withRouter(class Login extends Component {
           <form className="form-signin">
             <h2 className="form-signin-heading">Piano Act</h2>
             <input type="text" className="form-control" onChange={(e) => {this.setState({ 'userName':e.target.value });}}
-              name="username" placeholder="Username: [a-zA-Z0-9_]{4, 15}" required="true" autoFocus="" />
+              name="username" placeholder="username" required="true" autoFocus="" />
             <input type="password" className="form-control" onChange={(e) => {this.setState({ 'password':e.target.value });}}
-              name="password" placeholder="Password: [a-zA-Z0-9_.,!@#$%]{6, 16}" required="true"/>
+              name="password" placeholder="Please enter your password" required="true"/>
             <button className="btn btn-lg btn-primary btn-block" type="submit">Login</button>
             <p>{this.state.message}</p>
           </form>

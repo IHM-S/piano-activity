@@ -11,7 +11,7 @@ KEY_NAMES = {'C#':'C#,Db', 'Db':'C#,Db', 'D#':'D#,Eb', 'Eb':'D#,Eb', 'F#':'F#,Gb
 secret_key = '1234567890123456' # create new & store somewhere safe
 cipher = AES.new(secret_key,AES.MODE_ECB) # never use ECB in strong systems obviously
 
-app = Flask(__name__, static_folder=None)
+app = Flask(__name__, static_folder='../client/dist', template_folder='../client/public')
 CORS(app)
 db_connector = PianoDBConnector.PianoDBConnector()
 
@@ -24,15 +24,17 @@ app.url_map.converters['regex'] = RegexConverter
 
 @app.route('/')
 def welcome():
-    return render_template('welcome.html')
+    return render_template('index.html')
+
+@app.route('/<path:path>')
+def catch_all(path):
+    print(path)
+    return render_template('index.html')
 
 @app.route('/nextnote', methods=['GET'])
 def next_note():
-    print("nextNote Request: ")
-    print("    input: " + str(request.args))
     index = int(request.args.get('index'))
     sheet_name = request.args.get('sheetName')
-
     try:
         user_name, password = cipher.decrypt(base64.b64decode(request.args.get('session').encode())).decode().strip().split(',')
     except:
@@ -47,13 +49,9 @@ def next_note():
     else:
         return jsonify({'userExistence' : False})
 
-
 @app.route('/checknote', methods=['POST'])
 def check_note():
     notes = request.get_json()
-    print("checkNote Request: ")
-    print("    input: " + str(notes))
-
     try:
         user_name, password = cipher.decrypt(base64.b64decode(notes['session'].encode())).decode().strip().split(',')
     except:
@@ -71,8 +69,6 @@ def check_note():
 @app.route('/usersignin', methods=['POST'])
 def user_sign_in():
     user_info = request.get_json()
-    print("SigninRequest: ")
-    print("    user info: " + str(user_info))
     if db_connector.insert_new_user(user_info["userName"], user_info["password"]):  # insert to db successfully
         return jsonify({'succeed' : True})
     else:  # user already exist
@@ -84,8 +80,6 @@ def user_log_in():
     check if user name and login is correct and return session to user
     """
     user_info = request.get_json()
-    print("LoginRequest: ")
-    print("    user info: " + str(user_info))
     if db_connector.user_existence(user_info["userName"], user_info["password"]):
         return jsonify({'userExistence' : True, 'session' : base64.b64encode(cipher.encrypt((user_info["userName"] + "," + user_info["password"]).rjust(32))).decode(), 'userName' : user_info['userName']})
     else:
@@ -97,12 +91,6 @@ def check_session():
     checka if session is correct
     """
     session_info = request.get_json()
-
-    print("SessionCheckRequest: ")
-    print("    session_info: " + str(session_info))
-    print("    user_name: " + user_name)
-    print("    password: " + password)
-
     try:
         user_name, password = cipher.decrypt(base64.b64decode(session_info['session'].encode())).decode().strip().split(',')
     except:
@@ -122,11 +110,10 @@ def get_all_sheets():
 
 @app.route('/addnewsheet', methods=['POST'])
 def add_new_sheet():
+    """
+    function get user input of the new sheet user want to add then insert the new sheet into db
+    """
     session_info = request.get_json()
-
-    print("AddNewSheetRequest: ")
-    print("    session_info: " + str(session_info))
-
     try:
         user_name, password = cipher.decrypt(base64.b64decode(session_info['session'].encode())).decode().strip().split(',')
     except:
@@ -155,30 +142,27 @@ def send_current_status():
     """
     try:
         info_dict = request.get_json()
-        print(info_dict)
         db_connector.store_status(info_dict)
-        return jsonify({'succeed' : True}) 
+        return jsonify({'succeed' : True})
     except:
-        print(sys.exc_info()[0])
-        return jsonify({'succeed' : False}) 
+
+        return jsonify({'succeed' : False})
 
 @app.route('/getcurrentstatus', methods=['GET'])
 def get_current_status():
     """
     get current status of the user_name
-    """ 
+    """
     result_dict = db_connector.get_status(request.args.get('userName'))
     if result_dict:
         result_dict['succeed'] = True
-        print(result_dict)
         return jsonify(result_dict)
     else:
-        return jsonify({'succeed' : False}) 
 
+        return jsonify({'succeed' : False})
 
 @app.route('/getaudio/<regex("([0-9]|[12][0-9]|[3][0-5])"):path>', methods=['GET'])
-def serve_static(path):
-    print(path)
+def serve_audio(path):
     return send_from_directory(CLIENT_FOLDER, path + '.wav')
 
 if __name__ == "__main__":

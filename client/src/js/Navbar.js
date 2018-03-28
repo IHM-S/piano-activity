@@ -7,12 +7,12 @@ export default withRouter(class Navbar extends Component {
   constructor(props){
     super(props);
     this.state = {
-      addNewMusic: this.props.addNewMusic ? true : false,
-      logout: this.props.logout ? true : false,
-      musicSheets: this.props.musicSheets ? true : false,
-      status: this.props.status ? true : false,
-      login: this.props.login ? true : false,
-      signup: this.props.signup ? true : false
+      addNewMusic: !!this.props.addNewMusic,
+      logout: !!this.props.logout,
+      musicSheets: !!this.props.musicSheets,
+      status: !!this.props.status,
+      login: !!this.props.login,
+      signup: !!this.props.signup
     }
   }
 
@@ -23,7 +23,7 @@ export default withRouter(class Navbar extends Component {
     this.props.history.push({
       pathname : path
     });
-  }
+  };
 
   displayAddNewMusic = () => {
     if (this.state.addNewMusic) {
@@ -34,9 +34,8 @@ export default withRouter(class Navbar extends Component {
       );
     } else {
       return null;
-    } 
-    
-  }
+    }
+  };
 
   dsiplayLogout = () => {
     if (this.state.logout) {
@@ -47,7 +46,7 @@ export default withRouter(class Navbar extends Component {
     } else {
       return null;
     }
-  }
+  };
 
   displayMusicSheets = () => {
     if (this.state.musicSheets) {
@@ -55,7 +54,7 @@ export default withRouter(class Navbar extends Component {
     } else {
       return null;
     }
-  }
+  };
 
   displaySendStatus = () => {
     if (this.state.status) {
@@ -70,7 +69,7 @@ export default withRouter(class Navbar extends Component {
     } else {
       return null;
     }
-  }
+  };
 
   displayGetStatus = () => {
     if (this.state.status) {
@@ -85,7 +84,7 @@ export default withRouter(class Navbar extends Component {
     } else {
       return null;
     }
-  }
+  };
 
   displayLogin = () => {
     if (this.state.login) {
@@ -97,7 +96,7 @@ export default withRouter(class Navbar extends Component {
     } else {
       return null;
     }
-  }
+  };
 
   displaySignup = () => {
     if (this.state.signup) {
@@ -109,7 +108,7 @@ export default withRouter(class Navbar extends Component {
     } else { 
       return null;
     }
-  }
+  };
 
   render() {
     return (

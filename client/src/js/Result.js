@@ -13,7 +13,6 @@ export default withRouter(class Result extends Component {
   }
 
   render() {
-    console.log(this.state)
     if (this.state.resultList) {
       return (
         <div className="Result">

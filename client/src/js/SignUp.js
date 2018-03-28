@@ -30,7 +30,7 @@ export default withRouter(class SignUp extends Component {
                         },
             'method': 'POST'
         }).then((response) => response.json()).then((response) => {
-          if(response.succeed){ // successfully create a new user, redirect to login page
+          if (response.succeed) { // successfully create a new user, redirect to login page
             this.props.history.push({
               pathname : '/login',
               state: {message: "You have created your account now, please login."}
@@ -44,7 +44,7 @@ export default withRouter(class SignUp extends Component {
       } else { // username or password doesn't match regex
         this.setState({message: "UserName or password doesn't match corresponded regex."});
       } 
-    }
+    };
 
     render() {
         return (
@@ -55,10 +55,10 @@ export default withRouter(class SignUp extends Component {
                 <h2 className="form-signin-heading">Sign up form</h2>
                 <input type="text" className="form-control" 
                   onChange={(e) => {this.setState({'userName' : e.target.value});}}  name="username" 
-                  placeholder="Username: [a-zA-Z0-9_]{4, 15}" required="true" autoFocus="" />
+                  placeholder="Username" required="true" autoFocus="" />
                 <input type="password" className="form-control" 
                   onChange={(e) => {this.setState({'password' : e.target.value});}} name="password" 
-                  placeholder="Password: [a-zA-Z0-9_.,!@#$%]{6, 16}" required="true"/>
+                  placeholder="Password" required="true"/>
                 <button className="btn btn-lg btn-primary btn-block" type="submit">SignUp</button>
                 <p>{this.state.message}</p>
               </form>

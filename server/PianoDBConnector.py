@@ -178,7 +178,7 @@ class PianoDBConnector:
                              'correct': each_record[5]}
                 result_dict['resultList'].append(temp_dict)
             return result_dict
-        except sqlite3.OperationalError as e:
+        except (sqlite3.OperationalError, TypeError) as e:
             print(e)
             return False
         

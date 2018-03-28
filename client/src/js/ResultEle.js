@@ -6,11 +6,11 @@ export default class ResultEle extends Component {
         return (
           <tr>
             <th scope="row">{this.props.index}</th>
-            <td>{this.props.correctOctave}</td>
-            <td>{this.props.correctNote.replace(',', ' or ').replace('#', '♯').replace('b', '♭')}</td>
-            <td>{this.props.enteredOctave}</td>
-            <td>{this.props.enteredNote.replace(',', ' or ').replace('#', '♯').replace('b', '♭')}</td>
-            <td>{this.props.correct ? (<i className="fas fa-check"></i>) : (<i className="fas fa-times"></i>)}</td>
+            <td>{this.props.result.correctOctave}</td>
+            <td>{this.props.result.correctNote.replace(',', ' or ').replace('#', '♯').replace('b', '♭')}</td>
+            <td>{this.props.result.enteredOctave}</td>
+            <td>{this.props.result.enteredNote.replace(',', ' or ').replace('#', '♯').replace('b', '♭')}</td>
+            <td>{this.props.result.correct ? (<i className="fas fa-check"/>) : (<i className="fas fa-times"/>)}</td>
           </tr>
         )
     }

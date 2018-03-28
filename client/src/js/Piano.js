@@ -4,11 +4,11 @@ import '../static/Piano.css';
 // these functions are used to render the piano
 const Key = (props) => 
   <div
-    className={`Key-container ${props.color}`}
-    onClick={props.onPress.bind(null, props.keyNames)}
-    onMouseOver={props.mouseOver.bind(null, props.keyNames)}
-    onMouseOut={props.mouseOut}
-  ></div>
+  className={`Key-container ${props.color}`}
+  onClick={props.onPress.bind(null, props.keyNames)}
+  onMouseOver={props.mouseOver.bind(null, props.keyNames)}
+  onMouseOut={props.mouseOut}
+  />;
 
 const Octave = (props) =>
   <div className="Octave-container">
@@ -24,7 +24,7 @@ const Octave = (props) =>
     <Key {...props} color='white' keyNames={['A']} />
     <Key {...props} color='black' keyNames={['A#', 'Bb']} />
     <Key {...props} color='white' keyNames={['B']} />
-  </div>
+  </div>;
 
 const Piano = (props) => 
   <div className="Piano-container">
@@ -36,6 +36,6 @@ const Piano = (props) =>
         mouseOut={props.mouseOut}
       />
     )}
-  </div>
+  </div>;
 
 export default Piano;
