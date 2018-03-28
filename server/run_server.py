@@ -2,21 +2,25 @@ import os
 from flask import Flask, request, render_template, send_from_directory, jsonify
 from flask_cors import CORS
 from Crypto.Cipher import AES
+from werkzeug.routing import BaseConverter
 import base64
 import PianoDBConnector
 
-app = Flask(__name__, static_folder=None)
-CORS(app)
-
+CLIENT_FOLDER = os.path.abspath('../client/src/static')
+KEY_NAMES = {'C#':'C#,Db', 'Db':'C#,Db', 'D#':'D#,Eb', 'Eb':'D#,Eb', 'F#':'F#,Gb', 'Gb':'F#,Gb', 'G#':'G#,Ab', 'Ab':'G#,Ab', 'A#':'A#,Bb', 'Bb':'A#,Bb'}
 secret_key = '1234567890123456' # create new & store somewhere safe
 cipher = AES.new(secret_key,AES.MODE_ECB) # never use ECB in strong systems obviously
 
-
+app = Flask(__name__, static_folder=None)
+CORS(app)
 db_connector = PianoDBConnector.PianoDBConnector()
 
-CLIENT_FOLDER = os.path.abspath('../client/public')
-
-key_names = {'C#':'C#,Db', 'Db':'C#,Db', 'D#':'D#,Eb', 'Eb':'D#,Eb', 'F#':'F#,Gb', 'Gb':'F#,Gb', 'G#':'G#,Ab', 'Ab':'G#,Ab', 'A#':'A#,Bb', 'Bb':'A#,Bb'}
+# small converter class allows you to use regex in flask route
+class RegexConverter(BaseConverter):
+    def __init__(self, url_map, *items):
+        super(RegexConverter, self).__init__(url_map)
+        self.regex = items[0]
+app.url_map.converters['regex'] = RegexConverter
 
 @app.route('/')
 def welcome():
@@ -135,7 +139,7 @@ def add_new_sheet():
         for each_octave_note in content.split('.'):
             octave, note = each_octave_note.strip('[').strip(']').split(',')
             if len(note) == 2:
-                note = key_names[note]
+                note = KEY_NAMES[note]
             notes_list.append([octave, note])
         if db_connector.insert_new_sheet_music(sheet_name, notes_list):
             return jsonify({'userExistence' : True, 'succeed' : True})
@@ -172,11 +176,10 @@ def get_current_status():
         return jsonify({'succeed' : False}) 
 
 
-
-@app.route('/<path:path>', methods=['GET'])
+@app.route('/getaudio/<regex("([0-9]|[12][0-9]|[3][0-5])"):path>', methods=['GET'])
 def serve_static(path):
     print(path)
-    return send_from_directory(CLIENT_FOLDER, path)
+    return send_from_directory(CLIENT_FOLDER, path + '.wav')
 
 if __name__ == "__main__":
     app.debug = True

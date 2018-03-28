@@ -7,6 +7,7 @@ const Key = (props) =>
     className={`Key-container ${props.color}`}
     onClick={props.onPress.bind(null, props.keyNames)}
     onMouseOver={props.mouseOver.bind(null, props.keyNames)}
+    onMouseOut={props.mouseOut}
   ></div>
 
 const Octave = (props) =>
@@ -32,6 +33,7 @@ const Piano = (props) =>
         key={`Octave-${octave}`}
         onPress={props.onPress.bind(null, octave)}
         mouseOver={props.mouseOver.bind(null, octave)}
+        mouseOut={props.mouseOut}
       />
     )}
   </div>

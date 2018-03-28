@@ -3,50 +3,13 @@ import { withRouter } from 'react-router';
 import Piano from './Piano.js';
 import Navbar from './Navbar';
 import '../static/Main.css';
-import music0 from '../static/0.wav';
-import music1 from '../static/1.wav';
-import music2 from '../static/2.wav';
-import music3 from '../static/3.wav';
-import music4 from '../static/4.wav';
-import music5 from '../static/5.wav';
-import music6 from '../static/6.wav';
-import music7 from '../static/7.wav';
-import music8 from '../static/8.wav';
-import music9 from '../static/9.wav';
-import music10 from '../static/10.wav';
-import music11 from '../static/11.wav';
-import music12 from '../static/12.wav';
-import music13 from '../static/13.wav';
-import music14 from '../static/14.wav';
-import music15 from '../static/15.wav';
-import music16 from '../static/16.wav';
-import music17 from '../static/17.wav';
-import music18 from '../static/18.wav';
-import music19 from '../static/19.wav';
-import music20 from '../static/20.wav';
-import music21 from '../static/21.wav';
-import music22 from '../static/22.wav';
-import music23 from '../static/23.wav';
-import music24 from '../static/24.wav';
-import music25 from '../static/25.wav';
-import music26 from '../static/26.wav';
-import music27 from '../static/27.wav';
-import music28 from '../static/28.wav';
-import music29 from '../static/29.wav';
-import music30 from '../static/30.wav';
-import music31 from '../static/31.wav';
-import music32 from '../static/32.wav';
-import music33 from '../static/33.wav';
-import music34 from '../static/34.wav';
-import music35 from '../static/35.wav';
 
-var music = [ music0, music1, music2, music3, music4, music5, music6, music7, music8, music9, music10, music11, music12, music13, music14, music15, music16, music17, music18, music19, music20, music21, music22, music23, music24, music25, music26, music27, music28, music29, music30, music31, music32, music33, music34, music35 ];
 const notes = { C:0, 'C#':1, D:2, 'D#':3, E:4, F:5, 'F#':6, G:7, 'G#':8, A:9, 'A#':10, B:11 }
-
 const GET_NOTE_URL = 'http://localhost:5000/nextnote';
 const CHECK_NOTE_URL = 'http://localhost:5000/checknote';
 const SEND_CURRENT_STATUS = 'http://localhost:5000/sendcurrentstatus';
 const GET_CURRENT_STATUS = 'http://localhost:5000/getcurrentstatus';
+const GET_AUDIO = 'http://127.0.0.1:5000/getaudio/';
 
 // class that manage the main page, which contains piano, navbar and app header
 export default withRouter(class Main extends Component {
@@ -195,7 +158,11 @@ export default withRouter(class Main extends Component {
 
   mouseOver = (octave, keyNames) => {
     let i = octave * 12 + notes[keyNames[0]]
-    this.setState({music: music[i]})
+    this.setState({music: GET_AUDIO + i.toString()})
+  }
+
+  mouseOut = () => {
+    this.setState({music: null})
   }
 
   getNote() {
@@ -254,6 +221,7 @@ export default withRouter(class Main extends Component {
           numOctaves={3}
           onPress={this.onPress}
           mouseOver={this.mouseOver}
+          mouseOut={this.mouseOut}
         />
         {this.state.music ? <audio ref="audio_tag" src={this.state.music} autoPlay/> : null}
       </div>
