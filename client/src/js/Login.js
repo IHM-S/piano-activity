@@ -67,13 +67,15 @@ export default withRouter(class Login extends Component {
         if(response.userExistence) {
           // redirect to start page because user already has an session
           localStorage.setItem("state", "correct");
+          console.log("asdasd")
           this.props.history.push({
-            pathname : '/test',
+            pathname : '/main',
             state: {message: "successfully login."}
           });
         } else { // session is incorrect
           localStorage.setItem("state", "incorrect");
           localStorage.removeItem("pianoSession");
+          console.log("asdasd")
           this.setState({message: 'Session is incorrect.'});
         }
       }).catch((err) => { // server side error

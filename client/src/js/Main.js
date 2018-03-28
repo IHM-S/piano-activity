@@ -100,9 +100,14 @@ export default withRouter(class Main extends Component {
 
   // fetch next node from server and set the state
   fetchAndSet = (sheetName, index) => {
-    fetch(GET_NOTE_URL + `?sheetName=${sheetName}&index=${index}&session=${localStorage.getItem("pianoSession")}`)
+    fetch(GET_NOTE_URL + `?sheetName=${sheetName}&index=${index}`, {
+      'headers': {
+          'session': localStorage.getItem("pianoSession")
+        },
+    })
     .then(response => response.json())
     .then((data) => {
+      console.log(data)
       if (data.userExistence) {
         this.setState({
         currentNote: data.note,

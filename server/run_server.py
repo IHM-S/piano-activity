@@ -36,7 +36,7 @@ def next_note():
     index = int(request.args.get('index'))
     sheet_name = request.args.get('sheetName')
     try:
-        user_name, password = cipher.decrypt(base64.b64decode(request.args.get('session').encode())).decode().strip().split(',')
+        user_name, password = cipher.decrypt(base64.b64decode(request.headers['session'].encode())).decode().strip().split(',')
     except:
         return jsonify({'userExistence' : False})
 

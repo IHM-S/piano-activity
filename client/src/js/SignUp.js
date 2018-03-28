@@ -47,23 +47,23 @@ export default withRouter(class SignUp extends Component {
     };
 
     render() {
-        return (
-          <div>
-            <Navbar login={true}/>
-            <div className="wrapper" onSubmit={(e) => {e.preventDefault(); this.signUp();}}>
-              <form className="form-signin">
-                <h2 className="form-signin-heading">Sign up form</h2>
-                <input type="text" className="form-control" 
-                  onChange={(e) => {this.setState({'userName' : e.target.value});}}  name="username" 
-                  placeholder="Username" required="true" autoFocus="" />
-                <input type="password" className="form-control" 
-                  onChange={(e) => {this.setState({'password' : e.target.value});}} name="password" 
-                  placeholder="Password" required="true"/>
-                <button className="btn btn-lg btn-primary btn-block" type="submit">SignUp</button>
-                <p>{this.state.message}</p>
-              </form>
-            </div>
+      return (
+        <div>
+          <Navbar login={true}/>
+          <div className="wrapper" onSubmit={(e) => {e.preventDefault(); this.signUp();}}>
+            <form className="form-signin">
+              <h2 className="form-signin-heading">Sign up form</h2>
+              <input type="text" className="form-control" 
+                onChange={(e) => {this.setState({'userName' : e.target.value});}}  name="username" 
+                placeholder="Username" required="true" autoFocus="" />
+              <input type="password" className="form-control" 
+                onChange={(e) => {this.setState({'password' : e.target.value});}} name="password" 
+                placeholder="Password" required="true"/>
+              <button className="btn btn-lg btn-primary btn-block" type="submit">SignUp</button>
+              <p>{this.state.message}</p>
+            </form>
           </div>
-          )
+        </div>
+      )
     }
 })
