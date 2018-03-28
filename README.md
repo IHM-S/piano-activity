@@ -55,3 +55,14 @@ Implement as much as you reasonably can, and document any ideas that you don't h
 2. Run the serverside by command ```python3 run_server.py``` or ```python run_server.py```.
 
 ### Client build and run:
+1. ```npm install``` install the required packages.
+2. ```npm start``` run the client.
+
+### Client build with WebPack:
+1. run the shell script in the root directory.
+
+### Ideas I would like to implement:
+1. bind keyboard to the piano keys.
+2. Give tour to new users.
+3. Record all results of the user, so user can see their improvement.
+4. Add more feactures that the real piano has, e.g. (multiple key pressing, how hard you press a key, etc.)

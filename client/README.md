@@ -11,34 +11,36 @@ Your project should look like this:
 ```
 client/
   README.md
-  node_modules/
   package.json
+  package-lock.json
+  webpack.config.js
+  node_modules/
+  build/
+    favicon.ico
+    manifest.json
+  dist/
+    public/
+      index.html
+    bundle.js
+    index.html
   public/
     index.html
     favicon.ico
+    manifest.json
   src/
     App.js
     App.test.js
     index.js
     registerServiceWorker.js
     routes/
-      Login.css
-      Login.js
-      Main.css
-      Main.js
-      MusicSheetsDrop.css
-      MusicSheetsDrop.js
-      Navbar.js
-      NewSheet.css
-      NewSheet.js
-      Piano.css
-      Piano.js
-      Result.js
-      ResultEle.js
-      SignUp.css
-      SignUp.js
       index.js
-    sounds/
+    static/
+      Login.css
+      Main.css
+      Piano.css
+      SignUp.css
+      NewSheet.css
+      MusicSheetsDrop.css
       0.wav
       1.wav
         .
@@ -46,6 +48,16 @@ client/
         .
       34.wav
       35.wav
+    js/
+      Login.js
+      Main.js
+      MusicSheetsDrop.js
+      Navbar.js
+      NewSheet.js
+      Piano.js
+      Result.js
+      ResultEle.js
+      SignUp.js
 ```
 
 For the project to build, **these files must exist with exact filenames**:
