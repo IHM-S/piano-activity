@@ -60,13 +60,14 @@ class PianoDBConnector:
         cur = self.conn.cursor()
 
         cur.execute("SELECT * FROM notes WHERE sheetName = ?", (sheet_name,))
-        if cur.fetchone is None:
+        if cur.fetchone() is not None:
             return False
         else:
             for index, note in enumerate(notes):
                 cur.execute("INSERT INTO notes (sheetName, i, octave, note) VALUES (?,?,?,?)", (sheet_name, index, note[0], note[1]))
             self.conn.commit()
             return True
+
 
         
 
