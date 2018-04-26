@@ -6,7 +6,7 @@ import '../static/SignUp.css';
 const SIGNIN = 'http://localhost:5000/usersignin'
 
 export default withRouter(class SignUp extends Component {
-    constructor(props) {
+    constructor(props) { 
       super(props);
       this.state = {
         userName: '',
@@ -38,7 +38,7 @@ export default withRouter(class SignUp extends Component {
           } else { // username already exist
             this.setState({message: 'UserName already exist.'});
           }
-        }).catch((err) => { // server side wrong
+        }).catch((err) => { // server side failure
           this.setState({message: 'Unable to connect to the server.'});
         });
       } else { // username or password doesn't match regex

@@ -126,25 +126,9 @@ class PianoDBConnector:
         return result_list
 
     def store_status(self, info_dict):
-        # 'resultList': this.state.resultList,
-        # 'index': this.state.index,
-        # 'userName': this.state.userName,
-        # 'sheetName': this.state.sheetName,
-
-           #  {'correctNote': this.state.currentNote,
-           # 'correctOctave': this.state.currentOctave,
-           # 'enteredOctave': octave, 
-           # 'enteredNote': keyNames.join(','),
-           # 'correct': false, 
-           # 'index': this.state.index}
-
-           # userName      TEXT     NOT NULL,
-           #   correctNote   TEXT     NOT NULL,
-           #   correctOctave INTEGER  NOT NULL,
-           #   enteredOctave INTEGER  NOT NULL,
-           #   enteredNote   TEXT     NOT NULL,
-           #   correct       BOOLEAN  NOT NULL,
-           #   index         INTEGER  NOT NULL,
+        """
+        store user's current play status to db 
+        """
         cur = self.conn.cursor()
         cur.execute("INSERT OR REPLACE INTO status (userName, i, sheetName) VALUES (?,?,?)", (info_dict['userName'], info_dict['index'],info_dict['sheetName']))
         cur.execute("DELETE FROM list WHERE userName=?", (info_dict['userName'],))
@@ -160,6 +144,9 @@ class PianoDBConnector:
         self.conn.commit()
 
     def get_status(self, user_name):
+        """
+        try to load the status the user has saved
+        """
         cur = self.conn.cursor()
         result_dict = dict()
         try:
